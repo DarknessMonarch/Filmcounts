@@ -1,0 +1,13 @@
+@media screen {
+  .dashboardContainer {
+    gap: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+}

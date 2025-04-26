@@ -1,0 +1,228 @@
+@media screen {
+  .formMain {
+    gap: 20px;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .formHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+
+  .formHeader h1 {
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .formContainer {
+    gap: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formContainer h1 {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .formContainerInner {
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .formInputContainer,
+  .formInputWrapper {
+    gap: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .formInputContainer {
+    width: 100%;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+  }
+
+  .formInputContainer label,
+  .formInputWrapper label {
+    text-transform: capitalize;
+    color: var(--primary-light-color);
+    text-wrap: nowrap;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .formInputContainer label {
+    display: flex;
+    align-items: center;
+  }
+
+  .formationInput {
+    gap: 10px;
+    display: flex;
+  }
+
+  .addButton {
+    gap: 15px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 50px;
+    min-height: 50px;
+    border-radius: 15px;
+    color: var(--primary-color);
+    background-color: var(--tertiary-color);
+
+  }
+
+  .addButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .addIcon {
+    font-size: 28px;
+    color: var(--primary-color);
+  }
+
+  .formationList {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+
+  .formChangeUpload {
+    flex-grow: 1;
+    display: flex;
+    height: 150px;
+    cursor: pointer;
+    border-radius: 15px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-light-color);
+  }
+
+  
+  .imageUploaded {
+    border: none;
+  }
+
+  .IdImage {
+    border-radius: inherit;
+  }
+
+  .CameraIcon {
+    font-size: 24px;
+    color: var(--light-color);
+    
+  }
+
+  .inputField {
+    width: 100%;
+    border: none;
+    height: 60px;
+    outline: none;
+    padding: 15px;
+    border-radius: 15px;
+    color: var(--light-color);
+    background-color: var(--background-light-color);
+  }
+
+  .textareaField {
+    border-radius: 15px;
+    color: var(--light-color);
+    background-color: var(--background-light-color);
+  }
+
+  .inputField:-webkit-autofill,
+  .inputField:-webkit-autofill:hover,
+  .inputField:-webkit-autofill:focus,
+  .inputField:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--light-color) !important;
+  }
+
+  .inputField::placeholder {
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    color: var(--light-color);
+  }
+
+  .formToggleContainer {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submitButton {
+    gap: 15px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 15px;
+    color: var(--primary-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .submitButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .formMain {
+    align-items: center;
+  }
+
+  .formChangeUpload {
+    height: 150px;
+    border-radius: 15px;
+  }
+
+  .CameraIcon {
+    font-size: 32px;
+  }
+
+
+  .formImageContainer {
+    flex-direction: row;
+    background-color: transparent;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+
+}
+
+/* large screens : Desktop and 4k screens */
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+
+}

@@ -1,0 +1,155 @@
+@media screen {
+  .navContainer {
+    top: 0;
+    width: 100%;
+    display: flex;
+    z-index: 1000;
+    padding: 10px;
+    position: sticky;
+    border-radius:30px;
+    align-items: center;
+    backdrop-filter: blur(4px); 
+    height: var(--navbar-height);
+    box-shadow: var(--shadow-box);
+    justify-content: space-between;
+    -webkit-backdrop-filter: blur(4px); 
+    background: var(--background-color); 
+ 
+  }
+
+  .navLeft {
+    display: flex;
+  }
+
+  .navLeftInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navLeftInfo h1 {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+
+  .navLeftInfo p {
+    font-size: 0.9rem;
+    color: var(--primary-light-color);
+  }
+
+  .menuIcon {
+    font-size: 40px;
+    color: var(--primary-light-color);
+
+  }
+
+  .menuIcon:hover {
+    color: var(--tertiary-color);
+  }
+
+  .navRight {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .notificationButton {
+    height: 50px;
+    display: flex;
+    min-width: 50px;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 360%;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    box-shadow: var(--nav-shadow-box);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(253, 253, 253, 0.7);
+  }
+
+  .notificationButton:hover .notificationIcon {
+    color: var(--tertiary-color);
+  }
+
+  .notificationIcon {
+    font-size: 24px;
+    color: var(--primary-light-color);
+
+  }
+
+  .userProfile {
+    gap: 10px;
+    width: 100%;
+    padding: 2px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 30px;
+    justify-content: center;
+    text-transform: capitalize;
+    backdrop-filter: blur(4px);
+    box-shadow: var(--nav-shadow-box);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(253, 253, 253, 0.7);
+  }
+
+  .userProfileInfo {
+    display: flex;
+    padding-right: 10px;
+    flex-direction: column;
+  }
+
+  .userProfileInfo h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .userProfileInfo span {
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-transform: lowercase;
+    color: var(--primary-light-color);
+  }
+
+  .profileImg {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 360%;
+    object-position: center;
+  }
+
+  .activeNotification .notificationIcon {
+    color: var(--tertiary-color);
+  }
+
+  .dropdownIcon {
+    font-size: 28px;
+    color: var(--primary-light-color);
+
+  }
+
+  .userProfile:hover .dropdownIcon {
+    color: var(--tertiary-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .navContainer {
+    box-shadow: none;
+    height: var(--navbar-desktop-height);
+
+  }
+
+  .userProfile {
+    padding: 4px 8px;
+  }
+
+  .profileImg {
+    width: 40px;
+    height: 40px;
+  }
+}

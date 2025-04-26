@@ -1,0 +1,129 @@
+@media screen {
+  * {
+    /* dynamic style */
+    --light-color: #a0a8b4;
+    --primary-color: #2d3748;
+    --pending-color: #e89c0e;
+    --tertiary-color: #26cf96;
+    --secondary-color: #ff3b3b;
+    --background-color: #ffffff;
+    --primary-light-color: #4c5564;
+    --tertiary-light-color: #d8f7ec;
+    --tertiary-hover-color: #58e7b7;
+    --tertiary-lighter-color: #8aeccc;
+    --secondary-light-color: #fce3e3;
+    --background-light-color: #f3f7f6;
+    --background-dark-color: #e0e0e0;
+    --secondary-hover-color: #fc5757;
+    --secondary-lighter-color: #fcadad;
+    --pending-light-color: #fff8e6;
+    --shadow-box: rgba(76, 85, 100, 0.1) 0px 2px 44px;
+    --nav-shadow-box: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* global-width */
+    --sidenav-width: 350px;
+    --navbar-height: 60px;
+    --termcard-height: 200px;
+    --sidenav-mobile-width: 80%;
+    --navbar-desktop-height: 80px;
+  }
+
+  /* ::-webkit-scrollbar {
+      display: none;
+    } */
+
+  body {
+    font-weight: 300;
+    color: var(--primary-color);
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--background-light-color);
+  }
+
+  a,
+  router-link {
+    text-decoration: none;
+  }
+
+  input {
+    outline: none;
+  }
+
+  button {
+    outline: none;
+    border: none;
+  }
+
+  input:focus,
+  input:hover {
+    outline: none;
+  }
+
+  textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 4px;
+    background: transparent;
+  }
+
+  textarea::placeholder {
+    color: var(--light-color);
+  }
+
+  textarea:focus,
+  textarea:hover {
+    outline: none;
+    border-color: none;
+  }
+
+  select {
+    outline: none;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tertiary-color) var(--background-color);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--background-color);
+  border-radius: 15px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--tertiary-color);
+  border: 2px solid var(--background-color);
+  border-radius: 15px;
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

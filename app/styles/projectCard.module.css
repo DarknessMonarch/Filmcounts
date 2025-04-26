@@ -1,0 +1,276 @@
+@media screen {
+  .projectcardContainer {
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: 15px;
+    background-color: var(--background-color);
+  }
+
+  .projectcard {
+    flex-grow: 1;
+    gap: 20px;
+    width: 100%;
+    display: flex;
+    padding: 15px;
+    height: 300px;
+    cursor: pointer;
+    border-radius: 15px;
+    flex-direction: column;
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .projectcard:hover {
+    border: 1px solid var(--tertiary-hover-color);
+  }
+
+  .projectcard h2 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--light-color);
+  }
+
+  .emptyCard {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    border: 2px dotted var(--background-dark-color);
+  }
+
+  .emptyCard:hover {
+    border: 2px dotted var(--tertiary-color);
+  }
+
+
+  .addIcon {
+    font-size: 30px;
+    color: var(--background-dark-color);
+  }
+
+  .emptyCard:hover .addIcon {
+    color: var(--tertiary-color);
+  }
+
+  .projectHeader {
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom:1px solid var(--background-dark-color) ;
+
+  }
+
+  .projectcard:hover .projectHeader {
+    border-bottom: 1px solid var(--tertiary-hover-color);
+  }
+
+
+  .projectActions {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .editIcon {
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--tertiary-color);
+  }
+
+  .editIcon:hover {
+    color: var(--tertiary-lighter-color);
+  }
+
+  .deleteIcon {
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--secondary-color);
+  }
+
+  .deleteIcon:hover {
+    color: var(--secondary-lighter-color);
+  }
+
+  .projectDescription {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .projectDescriptionInfo {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .projectImage {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    object-position: center;
+  }
+
+  .projectLetterBackground {
+    width: 70px;
+    height: 70px;
+    padding: 10px;
+    display: flex;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .projectLetter {
+    justify-content: center;
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+  .projectLetter h4 {
+    font-size: 1.3rem;
+    color: var(--tertiary-color);
+  }
+
+  .pending .projectLetter h4 {
+    color: var(--secondary-color);
+  }
+
+  .rejected .projectLetter h4 {
+    color: var(--tertiary-color);
+  }
+
+  .pending .projectLetterBackground {
+    background-color: var(--secondary-light-color);
+  }
+
+  .pending .projectLetter {
+    background-color: var(--secondary-lighter-color);
+  }
+
+  .rejected .projectLetterBackground {
+    background-color: var(--tertiary-light-color);
+  }
+
+  .rejected .projectLetter {
+    background-color: var(--tertiary-lighter-color);
+  }
+
+  .projectDescriptionText {
+    gap: 2px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .projectDescriptionText h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .projectDescriptionText p {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--light-color);
+  }
+
+  .projectDescriptionContent {
+    height: 100%;
+  }
+
+  .dataStatus {
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  .dataStatus span {
+    padding: 5px 20px;
+    border-radius: 10px;
+    background-color: var(--background-light-color);
+  }
+
+  .pending .dataStatus {
+    color: var(--secondary-color);
+  }
+
+  .pending .dataStatus span {
+    background-color: var(--secondary-light-color);
+  }
+
+  .rejected .dataStatus {
+    color: var(--tertiary-color);
+  }
+
+  .rejected .dataStatus span {
+    background-color: var(--tertiary-light-color);
+  }
+  .projectFooter {
+    gap: 10px;
+    display: flex;
+    padding-top: 10px;
+    align-items: center;
+    justify-content: space-between;
+    border-top:1px solid var(--background-dark-color) ;
+  }
+
+  .projectcard:hover .projectFooter {
+    border-top: 1px solid var(--tertiary-hover-color);
+  }
+
+
+  .projectUser {
+    display: flex;
+    align-items: center;
+  }
+
+  .projectUserImage {
+    margin-right: -8px;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--background-light-color);
+    background-color: var(--background-light-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .teamImage {
+    object-fit: cover;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .projectUserImage:hover {
+    transform: translateY(-2px);
+    z-index: 10; 
+    transition: transform 0.2s ease;
+  }
+}
+@media only screen and (min-width: 48em) {
+  .projectcardContainer {
+    height: calc(100% - var(--navbar-desktop-height) - 20px);
+    overflow-y: auto;
+  }
+
+
+  .projectcard {
+    width: 500px;
+    
+  }
+
+  .emptyCard {
+    width: 500px;
+  }
+}

@@ -1,0 +1,287 @@
+@media screen {
+  .tableContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    border-radius: 15px;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--background-color);
+  }
+
+  .tableHeader {
+    gap: 10px;
+    display: flex;
+    padding: 15px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .tableHeader h1 {
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: start;
+    text-transform: capitalize;
+    color: var(--primary-color);
+  }
+
+  .tableControls {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .statusBadge {
+    width: 100px;
+    padding: 5px;
+    display: flex;
+    text-align: center;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .statusApproved {
+    color: var(--tertiary-color);
+    background-color: var(--tertiary-light-color);
+  }
+  
+  .statusFailed {
+    color: var(--secondary-color);
+    background-color: var(--secondary-light-color);
+  }
+  
+  .statusPending {
+    color: var(--pending-color);
+    background-color: var(--pending-light-color);
+  }
+
+  .searchContainer {
+    gap: 10px;
+    height: 40px;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+    border: 1px solid var(--background-light-color);
+  }
+
+  .searchIcon {
+    font-size: 24px;
+    color: var(--light-color);
+  }
+
+  .searchInput {
+    width: 100%;
+    border: none;
+    height: 100%;
+    font-size: 0.8rem;
+    color: var(--light-color);
+  }
+
+  .dateInput {
+    height: 40px;
+    padding: 10px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--background-light-color);
+  }
+
+  .downloadButton {
+    height: 40px;
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 10px;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid var(--background-light-color);
+  }
+
+  .downloadButton:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .downloadIcon {
+    font-size: 24px;
+    color: var(--light-color);
+  }
+
+  .downloadButton:hover .downloadIcon {
+    color: var(--background-color);
+  }
+
+  .tableWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+
+  .table thead {
+    height: 50px;
+    border-top: 1px solid var(--background-light-color);
+    border-bottom: 1px solid var(--background-light-color);
+  }
+
+  .table th {
+    font-weight: 600;
+    text-wrap: nowrap;
+    text-align: left;
+    padding: 10px !important;
+    text-transform: capitalize;
+    background-color: var(--background-color);
+  }
+
+  .table td {
+    padding: 10px;
+    text-wrap: nowrap;
+    border-bottom: 1px solid var(--background-light-color);
+  }
+
+  .clickableRow {
+    cursor: pointer;
+  }
+  
+
+  .clickableRow:hover {
+    background-color: var(--background-light-color);
+  }
+
+  .table tr:nth-child(even) {
+    background-color: var(--background-light-color);
+  }
+
+  .actionButtons {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+  }
+
+  .actionIcon {
+    font-size: 18px;
+  }
+
+  .editButton {
+    padding: 5px;
+    border: none;
+    display: flex;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    color: var(--tertiary-color);
+    background-color: var(--tertiary-light-color);
+  }
+
+  .deleteButton {
+    padding: 5px;
+    border: none;
+    display: flex;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    background-color: var(--secondary-light-color);
+  }
+
+  .noData {
+    height: 100%;
+    display: flex;
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-color);
+  }
+
+  .paginationContainer {
+    gap: 10px;
+    display: flex;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--background-light-color);
+  }
+
+  .paginationContainer h2 {
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--light-color);
+  }
+
+  .paginationControls {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .paginationButton {
+    gap: 4px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    font-size: .8rem;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    background: transparent;
+    border: 2px solid var(--background-light-color);
+  }
+
+  .paginationButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .paginationIcon {
+    font-size: 20px;
+    color: var(--primary-light-color);
+  }
+
+  .paginationButton:hover:not(:disabled) {
+    background-color: var(--background-light-color);
+  }
+
+  .paginationButton:hover {
+    color: var(--tertiary-color);
+    border: 2px solid var(--tertiary-color);
+  }
+
+  .paginationButton:hover .paginationIcon {
+    color: var(--tertiary-color);
+  }
+
+ 
+}
+
+/* Using it as global style for larger devices */
+@media only screen and (min-width: 48em) {
+  .tableHeader {
+    flex-direction: row;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

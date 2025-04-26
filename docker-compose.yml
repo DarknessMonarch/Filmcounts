@@ -1,0 +1,15 @@
+services:
+  filmcounts:
+    container_name: filmcounts
+    restart: unless-stopped
+    build: .
+    image: filmcounts
+    networks:
+      - nginxproxymanager_default
+    ports:
+      - "1300:1400"
+
+networks:
+  nginxproxymanager_default:
+    name: nginxproxymanager_default
+    external: true

@@ -1,0 +1,428 @@
+@media screen {
+  .authComponent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .authComponentBgImage {
+    display: none;
+  }
+
+  .authWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 10px;
+    margin-top: 80px;
+    align-items: center;
+  }
+
+  .formContainer {
+    gap: 30px;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .formHeader {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .formHeader h1 {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--tertiary-color);
+  }
+
+  .formHeader p {
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  .authInput {
+    gap: 10px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    padding: 10px 20px;
+    border-radius: 15px;
+    align-items: center;
+    color: var(--light-color);
+    background-color: var(--background-color);
+  }
+
+  .authInput:hover .authIcon {
+    color: var(--tertiary-color);
+  }
+
+  .authInput input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 10px;
+    background: transparent;
+    color: var(--light-color);
+  }
+
+  .authInput input:focus {
+    color: var(--light-color);
+    background-color: transparent;
+  }
+
+  .authInput input:-webkit-autofill,
+  .authInput input:-webkit-autofill:hover,
+  .authInput input:-webkit-autofill:focus,
+  .authInput input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--light-color) !important;
+  }
+
+  .authInput input::placeholder {
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    color: var(--light-color);
+  }
+
+  .authInput select {
+    width: 100%;
+    padding: 10px;
+    color: var(--light-color);
+    background-color: transparent;
+    border: none;
+  }
+
+  .dropdownContainer {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    align-items: center;
+  }
+
+  .dropdownContainer span {
+    font-size: 1rem;
+  }
+
+  .dropdownInput {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dropdownIcon {
+    font-size: 24px;
+  }
+
+  .dropdownArea {
+    gap: 10px;
+    top: 60px;
+    z-index: 99;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    border-radius: 15px;
+    flex-direction: column;
+    background-color: var(--background-color);
+  }
+
+  .dropdownArea span {
+    padding: 10px;
+  }
+
+  .dropdownArea span:hover {
+    border-radius: 15px;
+    color: var(--primary-color);
+    background-color: var(--tertiary-color);
+  }
+
+
+  .logoUploadSection {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    height: 250px;
+    padding: 10px;  
+    text-align: start;
+    border-radius: 15px;
+    flex-direction: column;
+    background-color: var(--background-color);
+  }
+
+  .logoUploadSection label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--primary-color);
+  }
+
+  .logoPreviewContainer {
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .uploadLogoPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    justify-content: center;
+    border: 2px dotted var(--light-color);
+  }
+
+  .uploadLogoPlaceholder:hover {
+    border: 2px dotted var(--tertiary-color);
+  }
+  .uploadLogoPlaceholder:hover .cameraIcon {
+    color: var(--tertiary-color);
+  }
+
+  .cameraIcon {
+    font-size: 30px;
+    color: var(--light-color);
+  }
+
+  .showBtn {
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .authIcon {
+    font-size: 24px;
+    color: var(--light-color);
+  }
+
+  .termsContainer {
+    gap: 10px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  .termsContainer input[type="checkbox"] {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 15px;
+    -webkit-appearance: button;
+    border: double 2px var(--light-color);
+    background-color: transparent;
+    color: var(--light-color);
+    white-space: nowrap;
+    overflow: hidden;
+    outline: none;
+    width: 20px;
+    height: 20px;
+  }
+
+  .termsContainer input[type="checkbox"]:checked {
+    background-color: transparent;
+    border-left-color: var(--light-color);
+    border-right-color: var(--light-color);
+  }
+
+  .termsContainer label {
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+
+  .termsContainer label:hover {
+    color: var(--tertiary-color);
+  }
+
+
+
+  .formAuthButton {
+    gap: 10px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 15px;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .formAuthButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .formChange {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .formChange span {
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-decoration: underline;
+  }
+
+  .formChange span:hover {
+    color: var(--tertiary-color);
+  }
+
+  .formContainer h3 {
+    gap: 10px;
+    display: flex;
+    font-weight: 300;
+    font-size: 0.9rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .formChangeUpload {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .profileSection {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    object-position: center;
+  }
+
+  .uploadCameraIcon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    cursor: pointer;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    border: 2px dotted var(--dark-background-color);
+
+  }
+
+  .CameraIcon {
+    color: var(--dark-background-color);
+  }
+
+  .IdImage {
+    border-radius: 12px;
+  }
+
+  .formFooter {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .btnLogin {
+    color: var(--tertiary-color);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .googleSignUpButton {
+    gap: 10px;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 15px;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+  }
+
+  .googleIcon {
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--tertiary-color);
+  }
+
+  .googleSignUpButton:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .googleSignUpButton:hover .googleIcon {
+    color: var(--background-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .authComponent {
+    display: flex;
+    flex-direction: row;
+  }
+  .organizationSignUp {
+    width: calc(100% / 2);
+  }
+
+  .formContainer {
+    width: 60%;
+  }
+
+  .authWrapper {
+    top: 0;
+    left: 0;
+    flex: 50%;
+    padding: 0;
+    width: 100%;
+    border: none;
+    margin-top: 0;
+    transform: none;
+    border-radius: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    align-items: center;
+    backdrop-filter: none;
+    justify-content: center;
+    -webkit-backdrop-filter: none;
+  }
+
+  .authImage {
+    border-radius: inherit;
+    object-position: center;
+  }
+
+  .authComponentBgImage {
+    position: relative;
+    flex: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    border-radius: 0 0 30px 0;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

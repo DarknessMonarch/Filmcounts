@@ -1,0 +1,147 @@
+@media screen {
+  .dashcardContainer {
+    gap: 10px;
+    display: flex;
+    padding: 10px 0;
+    overflow-x: auto;
+    min-height: 200px;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+  }
+
+  .dashcard {
+    gap: 20px;
+    flex-grow: 1;
+    width: 300px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    min-width: 300px;
+    border-radius: 15px;
+    flex-direction: column;
+    scroll-snap-align: center;
+    color: var(--primary-color);
+    justify-content: space-between;
+    background-color: var(--background-color);
+  }
+
+  .dashcardactive {
+    border: .5px solid var(--tertiary-color);
+    background-color: var(--tertiary-light-color);
+  }
+
+  .dashcardwarning {
+    border: .5px solid var(--secondary-color);
+    background-color: var(--secondary-light-color);
+
+  }
+
+  .dashcard h2 {
+    font-weight: 500;
+    font-size: .9rem;
+    text-align: start;
+    text-transform: capitalize;
+  }
+
+  .cardInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cardInfo h4 {
+    font-weight: 200;
+    text-transform: capitalize;
+    color: var(--primary-light-color);
+  }
+
+  .amountContainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .amountContainer h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: start;
+    text-transform: capitalize;
+  }
+
+  .amountWarning  {
+    color: var(--secondary-color);
+  }
+
+  .amountSuccess{
+    color: var(--tertiary-color);
+  }
+
+  .trendContainer {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .trendIcon {
+    font-size: 16px;
+  }
+
+  .status {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .status span {
+    padding: 10px 20px;
+    font-size: .8rem;
+    font-weight: 400;
+  }
+
+  .subtitleWarning span {
+    border-radius: 15px;
+    color: var(--secondary-color);
+    background-color: var(--secondary-light-color);
+
+  }
+  
+  .subtitleSuccess span {
+    border-radius: 15px;
+    color: var(--tertiary-color);
+    background-color: var(--tertiary-light-color);
+
+  }
+
+  .dashcardactive span {
+    color: var(--background-color);
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .dashcardwarning span {
+    color: var(--background-color);
+    background-color: var(--secondary-hover-color);
+  }
+  
+
+}
+
+/* For larger devices */
+@media only screen and (min-width: 48em) {
+  .dashcardContainer {
+    justify-content: space-between;
+  }
+}
+/* iPad Pro & Laptop screens */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

@@ -1,0 +1,195 @@
+@media screen {
+  .sideNavContainer {
+    top: 0;
+    left: 0;
+    width: 0;
+    gap: 10px;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    box-shadow: var(--shadow-box);
+    border-radius: 0 0 12px 12px;
+    transition: all 0.5s ease-in-out;
+    background-color: var(--background-color);
+  }
+
+  .showSideNav {
+    width: var(--sidenav-mobile-width);
+  }
+
+  .sideNavTop {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--navbar-desktop-height);
+    border-bottom: 2px solid var(--background-light-color);
+  }
+
+  .logoImg {
+    width: auto;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  .sidepanelicon {
+    font-size: 24px;
+    cursor: pointer;
+    transform: rotate(-90deg);
+    color: var(--tertiary-color);
+  }
+
+  .sidepanelicon:hover {
+    color: var(--tertiary-hover-color);
+  }
+
+  .sideNavScroller {
+    gap: 10px;
+    height: 100%;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sideNavScrollerTop {
+    gap: 10px;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-direction: column;
+  }
+
+  .sideNavLinkContainer{
+    gap: 10px;
+    padding: 8px;
+    height: 50px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 15px;
+
+  }
+
+  .sideNavIcon {
+    font-size: 20px;
+    color: var(--tertiary-color);
+  }
+
+  .sideNavLinkContainer h1 {
+    font-size: .9rem;
+    font-weight: 300;
+    text-transform: capitalize;
+    color: var(--primary-color);
+  }
+
+  .sideNavLinkContainer:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .sideNavLinkContainer:hover h1 {
+    color: var(--background-color);
+  }
+
+  .activesideNav {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .activesideNav h1 {
+    color: var(--background-color);
+  }
+
+
+  .sideNavLinkIconContainer {
+    width: 40px;
+    height:100%;
+    display: flex;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--nav-shadow-box);
+    background-color: var(--background-color);
+
+  }
+
+  .activesideNav .sideNavLinkIconContainer {
+    box-shadow: none;
+  }
+
+  .sideNavLinkContainer:hover .sideNavLinkIconContainer {
+    box-shadow: none;
+  }
+
+
+  .sideNavBottom {
+    padding: 10px;
+    padding-top: 0;
+  }
+
+  .sideNavAdverts {
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    min-height: 150px;
+    position: relative;
+    border-radius: 15px;
+    height: fit-content;
+    flex-direction: column;
+  }
+
+  .sideNavUtilities {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .advertImage {
+    border-radius: inherit;
+  }
+
+  .advertText {
+    gap: 10px;
+    height:100%;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    color: var(--background-color);
+  }
+
+  .advertText h1 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+  }
+
+  .advertText p {
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .sideNavContainer {
+    border-radius: 0;
+    position: relative;
+    width: var(--sidenav-width);
+  }
+
+  .advertText h1 {
+    font-size: 1.4rem;
+  }
+
+}

@@ -1,0 +1,306 @@
+@media screen {
+  .notificationComponent {
+    gap: 20px;
+    height: 100%;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+  }
+
+  .notificationHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .notificationHeader h1 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .notificationHeader p {
+    cursor: pointer;
+    font-weight: 100;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    color: var(--primary-light-color);
+  }
+
+  .alertNotificationComponent {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--light-color);
+  }
+
+  .alertNotification {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .alertContainer {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .notificationIcon {
+    font-size: 30px;
+  }
+
+  .alertContainer .notificationIcon {
+    color: var(--light-color);
+  }
+
+  .alertInfo {
+    gap: 4px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .alertContainer h1 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: start;
+    color: var(--light-color);
+  }
+
+  .alertContainer p {
+    color: var(--light-color);
+    font-size: 0.7rem;
+    font-weight: 300;
+    text-align: start;
+  }
+
+  .enableContainer h1 {
+    color: var(--primary-color);
+  }
+
+  .enableContainer p {
+    color: var(--primary-color);
+  }
+
+  .enableContainer .notificationIcon {
+    color: var(--primary-color);
+  }
+
+  .enableContainer {
+    border: 1px solid var(--primary-color);
+  }
+
+  .toggleNotification {
+    background-color: var(--tertiary-color);
+    -webkit-transition: all 0.8s ease 0s;
+    transition: all 0.8s ease 0s;
+    align-items: center;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    width: 50px;
+    height: 20px;
+  }
+
+  .toggleDot {
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: absolute;
+    border-radius: 360%;
+    transition: transform 0.3s;
+    background-color: var(--background-color);
+    border: 1px solid var(--background-color);
+  }
+
+  .moveDot {
+    background-color: var(--light-color);
+  }
+
+  .moveDot .toggleDot {
+    transform: translateX(30px);
+  }
+
+  .toggleNotification:not(.moveDot) {
+    background-color: var(--primary-color);
+  }
+
+  .lineNotification {
+    width: 100%;
+    height: 1px;
+    background-color: var(--light-color);
+  }
+
+  .notificationAreaComponent {
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .notificationArea {
+    width: 100%;
+    display: flex;
+    border-radius: 15px;
+    flex-direction: row;
+    align-items: flex-end;
+    min-height: fit-content;
+    background-color: var(--background-light-color);
+  }
+
+  .unreadNotification {
+    background-color: var(--tertiary-light-color);
+    border: 1px solid var(--tertiary-color);
+  }
+
+  .readNotification {
+    opacity: 0.8;
+  }
+
+  .notificationDot {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    position: relative;
+  }
+  .notificationDot::after,
+  .notificationDot::before {
+    content: "";
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--tertiary-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: animloader 2s linear infinite;
+  }
+  .notificationDot::after {
+    animation-delay: 1s;
+  }
+
+  @keyframes animloader {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+
+  .notificationInfo {
+    gap: 5px;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    text-align: start;
+    flex-direction: column;
+  }
+
+  .notificationInfoHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .notificationText {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .notificationText h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: underline;
+    color: var(--primary-light-color);
+  }
+
+  .notificationInfo p {
+    font-size: 0.9rem;
+    font-weight: 200;
+    color: var(--primary-light-color);
+  }
+
+  .approveButton {
+    background-color: var(--tertiary-color);
+    color: var(--background-color);
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 14px;
+    width: 100px;
+  }
+
+  .approveButton:hover {
+    background-color: var(--tertiary-light-color);
+  }
+
+  .notificationFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .notificationTime {
+    font-size: 0.7rem;
+    color: var(--primary-light-color);
+  }
+
+  .deleteIcon {
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--secondary-color);
+  }
+
+  .deleteIcon:hover {
+    color: var(--secondary-hover-color);
+  }
+
+  .noNotificationArea {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+}
+
+@media only screen and (min-width: 48em) {
+  .notificationComponent {
+    padding: 0;
+    max-height: 400px;
+    height: fit-content;
+    padding: 4px 10px;
+  }
+
+  .notificationAreaComponent {
+    z-index: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+
+  .alertContainer h1 {
+    font-size: 1rem;
+  }
+
+  .notificationIcon {
+    font-size: 40px;
+  }
+
+  .alertContainer h1 {
+    font-size: 1rem;
+  }
+
+  .alertContainer p {
+    font-size: 0.8rem;
+  }
+}
