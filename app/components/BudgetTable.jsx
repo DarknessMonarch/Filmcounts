@@ -1,0 +1,385 @@
+"use client";
+
+import { toast } from "sonner";
+import { useState } from "react";
+
+import Popup from "@/app/components/Popup"; 
+import Nothing from "@/app/components/Nothing";
+import styles from "@/app/styles/table.module.css";
+import NoDataImg from "@/public/assets/noData.png";
+
+import { IoSearch as SearchIcon } from "react-icons/io5";
+import {
+  MdChevronLeft as LeftIcon,
+  MdChevronRight as RightIcon,
+  MdOutlineFileDownload as DownloadIcon,
+  MdEdit as EditIcon,
+  MdDelete as DeleteIcon,
+  MdAdd as AddIcon,
+  MdSend as SubmitIcon,
+} from "react-icons/md";
+
+export default function BudgetTable({
+  columns,
+  data,
+  content,
+  itemsPerPage = 8,
+  showEditButton = true,
+  showDeleteButton = true,
+  statusKey = "status",
+  showCustomButton = false,
+  customButtonLabel = "Add",
+  customButtonIcon = AddIcon,
+  onCustomButtonClick,
+  customButtonContent,
+  showSubmitButton = false,
+  onSubmitBudget,
+  onDelete,
+  activeTab = "unsubmitted",
+  onTabChange
+}) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [customModalOpen, setCustomModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const toggleCustomModal = () => {
+    setCustomModalOpen(!customModalOpen);
+  };
+
+  const handleEdit = (item) => {
+    toggleModal();
+  };
+
+  const handleDelete = async (item) => {
+    if (onDelete) {
+      await onDelete(item);
+    } else {
+      toast.error("Failed to delete item");
+    }
+  };
+
+  const handleSubmit = async (item) => {
+    if (onSubmitBudget) {
+      await onSubmitBudget(item);
+    } else {
+      toast.success("Budget submitted successfully");
+    }
+  };
+
+  const handleCustomButton = () => {
+    if (onCustomButtonClick) {
+      onCustomButtonClick();
+    }
+    
+    if (customButtonContent) {
+      toggleCustomModal();
+    }
+  };
+
+  const filteredData = data.filter((item) => {
+    return Object.values(item).some(
+      (value) =>
+        value &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleDownload = () => {
+    toast.success("Download successful");
+  };
+
+  const getStatusStyle = (status) => {
+    if (!status) return "";
+
+    const normalizedStatus = status.toString().toLowerCase();
+
+    if (normalizedStatus === "approved") {
+      return styles.statusApproved;
+    } else if (normalizedStatus === "submitted") {
+      return styles.statusSubmitted;
+    } else if (normalizedStatus === "unsubmitted") {
+      return styles.statusPending;
+    }
+
+    return "";
+  };
+
+  const renderCellContent = (item, column) => {
+    const value = item[column.key];
+    if (column.key === statusKey) {
+      return (
+        <span className={`${styles.statusBadge} ${getStatusStyle(value)}`}>
+          {value}
+        </span>
+      );
+    }
+
+    if (column.key === "cost" || column.key === "totalCost") {
+      return `$${Number(value || 0).toLocaleString()}`;
+    }
+
+    return String(value || '');
+  };
+
+  const showActionColumn = showEditButton || showDeleteButton || showSubmitButton;
+  const CustomButtonIcon = customButtonIcon;
+
+  const tabConfig = [
+    { key: "unsubmitted", label: "Unsubmitted", color: "#f59e0b" },
+    { key: "submitted", label: "Submitted", color: "#3b82f6" },
+    { key: "approved", label: "Approved", color: "#10b981" }
+  ];
+
+  return (
+    <div className={styles.tableContainer}>
+      {/* Budget Status Tabs */}
+      <div className={styles.tabContainer}>
+        {tabConfig.map((tab) => (
+          <button
+            key={tab.key}
+            className={`${styles.tabButton} ${activeTab === tab.key ? styles.activeTab : ''}`}
+            onClick={() => onTabChange && onTabChange(tab.key)}
+            style={{
+              backgroundColor: activeTab === tab.key ? tab.color : 'transparent',
+              color: activeTab === tab.key ? 'white' : tab.color,
+              border: `2px solid ${tab.color}`,
+              padding: '8px 16px',
+              borderRadius: '6px',
+              margin: '0 4px',
+              cursor: 'pointer',
+              fontWeight: '500'
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.tableHeader}>
+        <h1>Budget Items</h1>
+        <div className={styles.tableControls}>
+          <div className={styles.searchContainer}>
+            <SearchIcon
+              className={styles.searchIcon}
+              aria-hidden="true"
+              alt="Search"
+              aria-label="Search"
+            />
+            <input
+              type="text"
+              placeholder="Search budget items"
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
+          
+          {showCustomButton && (
+            <button 
+              className={styles.customButton} 
+              onClick={handleCustomButton}
+              title={customButtonLabel}
+            >
+              <CustomButtonIcon
+                className={styles.customButtonIcon}
+                aria-hidden="true"
+                alt={customButtonLabel}
+                aria-label={customButtonLabel}
+              />
+              {customButtonLabel}
+            </button>
+          )}
+          
+          <button className={styles.downloadButton} onClick={handleDownload}>
+            <DownloadIcon
+              className={styles.downloadIcon}
+              aria-hidden="true"
+              alt="Download"
+              aria-label="Download"
+            />
+          </button>
+        </div>
+      </div>
+      
+      <div className={styles.tableWrapper}>
+        {currentItems.length > 0 ? (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {columns.map((column, index) => (
+                  <th key={index}>{column.label}</th>
+                ))}
+                {showActionColumn && (
+                  <th className={styles.actionColumn}>Action</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr key={item.id || index}>
+                  {columns.map((column, colIndex) => (
+                    <td key={colIndex}>{renderCellContent(item, column)}</td>
+                  ))}
+                  {showActionColumn && (
+                    <td>
+                      <div className={styles.actionButtons}>
+                        {showEditButton && (
+                          <button
+                            className={styles.editButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEdit(item);
+                            }}
+                          >
+                            <EditIcon
+                              aria-hidden="true"
+                              alt="Edit"
+                              aria-label="Edit"
+                              className={styles.actionIcon}
+                            />
+                          </button>
+                        )}
+                        {showDeleteButton && (
+                          <button
+                            className={styles.deleteButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(item);
+                            }}
+                          >
+                            <DeleteIcon
+                              aria-hidden="true"
+                              alt="Delete"
+                              aria-label="Delete"
+                              className={styles.actionIcon}
+                            />
+                          </button>
+                        )}
+                        {showSubmitButton && activeTab === "unsubmitted" && (
+                          <button
+                            className={styles.submitButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSubmit(item);
+                            }}
+                            title="Submit Budget"
+                          >
+                            <SubmitIcon
+                              aria-hidden="true"
+                              alt="Submit"
+                              aria-label="Submit"
+                              className={styles.actionIcon}
+                            />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <Nothing
+            NothingImage={NoDataImg}
+            Text={`No ${activeTab} budget items found`}
+            Alt="No data found"
+          />
+        )}
+      </div>
+
+      <div className={styles.paginationContainer}>
+        <h2>
+          Page {currentPage} of {totalPages || 1}
+        </h2>
+        <div className={styles.paginationControls}>
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={styles.paginationButton}
+          >
+            <LeftIcon
+              aria-hidden="true"
+              alt="Previous"
+              aria-label="Previous"
+              className={styles.paginationIcon}
+            />
+            Previous
+          </button>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className={styles.paginationButton}
+          >
+            Next
+            <RightIcon
+              aria-hidden="true"
+              alt="Next"
+              aria-label="Next"
+              className={styles.paginationIcon}
+            />
+          </button>
+        </div>
+      </div>
+
+      <Popup
+        Top={0}
+        Right={0}
+        Left={0}
+        Bottom={0}
+        Width={500}
+        Height={900}
+        OnClose={toggleModal}
+        Blur={5}
+        Zindex={9999}
+        BorderRadiusTopLeft={15}
+        BorderRadiusTopRight={15}
+        BorderRadiusBottomRight={15}
+        BorderRadiusBottomLeft={15}
+        Content={content}
+        IsOpen={modalOpen}
+      />
+
+      {customButtonContent && (
+        <Popup
+          Top={0}
+          Right={0}
+          Left={0}
+          Bottom={0}
+          Width={500}
+          Height={900}
+          OnClose={toggleCustomModal}
+          Blur={5}
+          Zindex={9999}
+          BorderRadiusTopLeft={15}
+          BorderRadiusTopRight={15}
+          BorderRadiusBottomRight={15}
+          BorderRadiusBottomLeft={15}
+          Content={customButtonContent}
+          IsOpen={customModalOpen}
+        />
+      )}
+    </div>
+  );
+}

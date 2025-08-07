@@ -1,0 +1,378 @@
+@media screen {
+  .formContainer {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .formContainerWrapper {
+    gap: 20px;
+    display: flex;
+    flex: 1 1 auto;
+    border-radius: 10px;
+    flex-direction: column;
+    background-color: var(--background-color);
+  }
+
+  .formContainerHeader {
+    border-bottom: 1px solid var(--background-dark-color);
+  }
+
+  .formContainerHeader h1 {
+    padding: 20px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .formContainerInner {
+    gap: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formProfleInner {
+    gap: 20px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    background-color: var(--background-color);
+  }
+
+  .formInputInnerWrapper {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .formInputContainer,
+  .formInputWrapper {
+    gap: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formInputContainer {
+    width: 100%;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+  }
+
+  .formInputContainer label,
+  .formInputWrapper label {
+    text-transform: capitalize;
+    color: var(--primary-lighter-color);
+    text-wrap: nowrap;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: start;
+  }
+
+  .formInputContainer label {
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdownWithButtonContainer {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .formationInput {
+    gap: 10px;
+    display: flex;
+  }
+
+  .addButton {
+    gap: 10px;
+    padding: 10px;
+    width: fit-content;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 10px;
+    color: var(--primary-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .addButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .addIcon {
+    font-size: 32px;
+    color: var(--background-color);
+  }
+
+  .formationList {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .formChangeUpload {
+    margin: 10px;
+    flex-grow: 1;
+    display: flex;
+    height: 150px;
+    cursor: pointer;
+    border-radius: 10px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border: 2px dotted var(--background-dark-color);
+  }
+
+  .imageUploaded {
+    border: none;
+  }
+
+  .IdImage {
+    border-radius: inherit;
+  }
+
+  .uploadPlaceholder {
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .CameraIcon {
+    font-size: 24px;
+    color: var(--light-color);
+  }
+
+  .uploadPlaceholder p {
+    font-size: 0.8rem;
+    color: var(--light-color);
+    text-transform: capitalize;
+  }
+
+  .inputField {
+    width: 100%;
+    border: none;
+    height: 60px;
+    outline: none;
+    padding: 15px; 
+    font-weight: 200;
+    border-radius: 10px;
+    color: var(--light-color);
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .textareaField {
+    padding: 10px;
+    font-weight: 200;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    color: var(--light-color);
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .inputField:-webkit-autofill,
+  .inputField:-webkit-autofill:hover,
+  .inputField:-webkit-autofill:focus,
+  .inputField:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--light-color) !important;
+  }
+
+  .inputField::placeholder {
+    font-size: 0.8rem;
+    font-weight: 200;
+    text-transform: capitalize;
+    color: var(--light-color);
+  }
+
+  .formToggleContainer {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submitButton {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 10px;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .submitButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .passwordRules {
+    gap: 10px;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    flex-direction: column;
+    background-color: var(--background-lighter-color);
+  }
+
+  .passwordRules h3 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .passwordRules ul {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .passwordRules ul li {
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .ruleMet {
+    color: var(--tertiary-color);
+  }
+
+  .ruleNotMet {
+    color: var(--secondary-lighter-color);
+  }
+
+  .signOutButton {
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    font-size: .9rem;
+    max-height: 50px;
+    min-height: 50px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .signOutButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .settingFooterIcon {
+    font-size: 24px;
+  }
+
+  .devicesList {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .deviceItem {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .deviceItem h4 {
+    font-size: 1rem;
+    color: var(--light-color);
+  }
+
+   .deviceItem p {
+    font-size: 1rem;
+    color: var(--light-color);
+  }
+
+  
+  .deleteButton {
+    gap: 10px;
+    width: 100%;  
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    font-size: .9rem;
+    max-height: 50px;
+    min-height: 50px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-color);
+    background-color: var(--secondary-color);
+  }
+
+  .deleteButton:hover {
+    background-color: var(--secondary-hover-color);
+  }
+
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .formContainer {
+    flex-direction: row;
+  }
+
+  .formContainerHeader h1 {
+    padding: 20px;
+  }
+
+  .formContainerInner {
+    padding: 15px;
+  }
+
+  .formChangeUpload {
+    height: 150px;
+    border-radius: 10px;
+  }
+
+  .CameraIcon {
+    font-size: 32px;
+  }
+
+  .formImageContainer {
+    flex-direction: row;
+    background-color: transparent;
+  }
+
+  .formInputInnerWrapper {
+    gap: 15px;
+    flex-wrap: nowrap;
+  }
+
+  .signOutButton {
+    width: 200px;
+  }
+
+  .deleteButton {
+    width: 200px;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

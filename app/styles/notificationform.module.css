@@ -1,0 +1,113 @@
+@media screen {
+  .formSection {
+    height: 100%;
+    border-radius: 10px;
+    background-color: var(--background-color);
+  }
+
+  .formHeader {
+    border-bottom: 1px solid var(--background-dark-color);
+  }
+
+  .formHeader h1 {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 20px 10px;
+  }
+
+  .preferencesContainer {
+    padding: 10px;
+  }
+
+  .preferencesContainerInner {
+    gap: 15px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    border-radius: 4px;
+    flex-direction: column;
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .toggleContainer {
+    gap: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .toggleHeader {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .toggleIconWrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-light-color);
+  }
+
+  .switchIcon {
+    flex-shrink: 0;
+    font-size: 15px;
+    color: var(--primary-lighter-color);
+  }
+
+  .toggleContainer span {
+    font-weight: 400;
+    font-size: 0.9rem;
+  }
+
+  .toggleSwitch {
+    width: 40px;
+    height: 24px;
+    padding: 2px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 50px;
+    background-color: var(--background-dark-color);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .active {
+    flex-direction: row-reverse;
+    background-color: var(--tertiary-color);
+  }
+
+  .toggleSlider {
+    width: 20px;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--background-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .formHeader h1 {
+    padding: 20px;
+  }
+
+  .preferencesContainer {
+    padding: 15px;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

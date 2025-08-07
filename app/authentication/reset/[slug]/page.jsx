@@ -58,18 +58,31 @@ export default function Reset({ params }) {
       return;
     }
 
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const result = await resetPassword(params.slug, formData.password);
+      // Create the reset data object that matches what the store expects
+      const resetData = {
+        token: params.slug, // The reset token from URL params
+        password: formData.password,
+        confirmPassword: formData.confirmPassword
+      };
+
+      const result = await resetPassword(resetData);
       
       if (result.success) {
-        toast.success(result.message);
-        router.push("login", { scroll: false });
+        toast.success(result.data?.message || "Password reset successfully");
+        router.push("/login", { scroll: false });
       } else {
-        toast.error(result.message);
+        toast.error(result.data?.message || result.error || "Failed to reset password");
       }
     } catch (error) {
+      console.error("Reset password error:", error);
       toast.error("Failed to reset password");
     } finally {
       setIsLoading(false);
@@ -108,6 +121,7 @@ export default function Reset({ params }) {
               onChange={handleInputChange}
               placeholder="New Password"
               required
+              minLength={8}
             />
             <button
               type="button"
@@ -131,6 +145,7 @@ export default function Reset({ params }) {
               onChange={handleInputChange}
               placeholder="Confirm Password"
               required
+              minLength={8}
             />
             <button
               type="button"
@@ -148,7 +163,7 @@ export default function Reset({ params }) {
           <div className={styles.authBottomBtn}>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !formData.password || !formData.confirmPassword}
               className={styles.formAuthButton}
             >
               {isLoading ? <Loader /> : "Reset Password"}

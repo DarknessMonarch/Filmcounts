@@ -15,9 +15,8 @@ export default function NotFound() {
   const { isAuth } = useAuthStore();
 
   const goBack = () => {
-    if (isAuth) {
-      const userType = pathname.split("/")[2]; 
-      router.push(`/page/${userType}`);
+    if (!isAuth) {
+      router.push("/");
     } else {
       router.back();
     }
@@ -37,12 +36,6 @@ export default function NotFound() {
         <button className={styles.notFoundBtn} onClick={goBack}>
           Go Back <BackIcon className={styles.backIcon} aria-hidden="true" />
         </button>
-        {isAuth && (
-          <button className={styles.notFoundBtn} onClick={goToDashboard}>
-            Dashboard{" "}
-            <BackIcon className={styles.backIcon} aria-hidden="true" />
-          </button>
-        )}
       </div>
     </div>
   );

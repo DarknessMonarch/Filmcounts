@@ -28,7 +28,6 @@ export default function Login() {
   const router = useRouter();
   const { login } = useAuthStore();
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -36,6 +35,35 @@ export default function Login() {
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleRouting = () => {
+    const { getUserOrganizations, isUserAdmin } = useAuthStore.getState();
+    const organizations = getUserOrganizations();
+    
+    // Check if user has admin roles
+    if (isUserAdmin()) {
+      router.push("/page/admin/overview");
+      return;
+    }
+    
+    // Check if user has organizations
+    if (organizations && organizations.length > 0) {
+      // If multiple organizations, show selection page
+      if (organizations.length > 1) {
+        router.push("/authentication/account");
+        return;
+      }
+      
+      // Single organization - redirect directly
+      const org = organizations[0].organization;
+      const orgSlug = org.name?.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/page/organization/${orgSlug}/dashboard`);
+      return;
+    }
+    
+    // Individual user with no organizations
+    router.push("/page/user/dashboard");
   };
 
   const onSubmit = async (e) => {
@@ -57,19 +85,25 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const result = await login(formData.email, formData.password);
-      router.push("/page/user/dashboard");
-      toast.success("Login successful");
+      const result = await login(formData);
+      
+      if (result.success) {
+        toast.success("Login successful");
+        handleRouting();
+      } else {
+        toast.error(result.data?.message || "Login failed");
+      }
     } catch (error) {
+      console.error("Login error:", error);
       toast.error("An error occurred during login");
     } finally {
       setIsLoading(false);
     }
   };
 
-   const handleGoogleSignUp = () => {
-      toast.info("Google sign-up functionality will be implemented");
-    };
+  const handleGoogleSignUp = () => {
+    toast.info("Google sign-up functionality will be implemented");
+  };
 
   return (
     <div className={styles.authComponent}>
@@ -144,35 +178,27 @@ export default function Login() {
               Forgot Password?
             </span>
           </div>
+          
           <div className={styles.formFooter}>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={`${styles.formAuthButton} ${
-              isLoading ? styles.activeFormAuthButton : ""
-            }`}
-          >
-            {isLoading ? <Loader /> : "Login"}
-          </button>
-
-          <h3>
-            Don&apos;t have an account?{" "}
-            <div
-              className={styles.btnLogin}
-              onClick={() => router.push("signup")}
-            >
-              Signup
-            </div>
-          </h3>
-          <div>or</div>
-
             <button
-              type="button"
-              className={styles.googleSignUpButton}
-              onClick={handleGoogleSignUp}
+              type="submit"
+              disabled={isLoading}
+              className={`${styles.formAuthButton} ${
+                isLoading ? styles.activeFormAuthButton : ""
+              }`}
             >
-              <GoogleIcon className={styles.googleIcon} />
+              {isLoading ? <Loader /> : "Login"}
             </button>
+
+            <h3>
+              Don&apos;t have an account?{" "}
+              <div
+                className={styles.btnLogin}
+                onClick={() => router.push("signup")}
+              >
+                Signup
+              </div>
+            </h3>
           </div>
         </form>
       </div>

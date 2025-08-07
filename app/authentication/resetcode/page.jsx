@@ -13,30 +13,40 @@ import { MdOutlineEmail as EmailIcon } from "react-icons/md";
 export default function ResetCode() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
   const router = useRouter();
-  const requestPasswordReset = useAuthStore(
-    (state) => state.requestPasswordReset
-  );
+  const { sendForgotPassword } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!email.trim()) {
-      setError("Email is required");
+      toast.error("Email is required");
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      toast.error("Please enter a valid email address");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const result = await requestPasswordReset(email);
+      const result = await sendForgotPassword({ email: email.trim() });
 
       if (result.success) {
-        toast.success(result.message);
+        toast.success(result.data?.message || "Password reset link sent to your email");
+        // Optional: redirect to login or stay on page
+        setTimeout(() => {
+          router.push("/authentication/login");
+        }, 2000);
       } else {
-        toast.error(result.message);
+        toast.error(result.data?.message || "Failed to send password reset link");
       }
     } catch (error) {
+      console.error("Password reset error:", error);
       toast.error("An error occurred while requesting password reset");
     } finally {
       setIsLoading(false);
@@ -61,7 +71,6 @@ export default function ResetCode() {
       </div>
       <div className={styles.authWrapper}>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
-    
           <div className={styles.formHeader}>
             <h1>Reset password</h1>
             <p>Enter your email to get the reset link</p>
@@ -77,30 +86,30 @@ export default function ResetCode() {
             <input
               type="email"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError("");
-              }}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              required
             />
           </div>
+          
           <div className={styles.formFooter}>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={styles.formAuthButton}
-          >
-            {isLoading ? <Loader /> : "Request code"}
-          </button>
-          <h3>
-          Remembered your password?{" "}
-            <div
-              className={styles.btnLogin}
-              onClick={() => router.push("login")}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={styles.formAuthButton}
             >
-              Login
-            </div>
-          </h3>
+              {isLoading ? <Loader /> : "Request code"}
+            </button>
+            
+            <h3>
+              Remembered your password?{" "}
+              <span
+                className={styles.btnLogin}
+                onClick={() => router.push("/authentication/login")}
+              >
+                Login
+              </span>
+            </h3>
           </div>
         </form>
       </div>

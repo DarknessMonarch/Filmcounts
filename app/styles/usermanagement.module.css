@@ -1,0 +1,226 @@
+@media screen {
+  .userManagementContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .statsContainer {
+    gap: 10px;
+    display: flex;
+    overflow-x: auto;
+    min-height: 150px;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+  }
+
+  .statCard {
+    flex: 1;
+    gap: 15px;
+    width: 300px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    min-width: 300px;
+    border-radius: 15px;
+    align-items: center;
+    scroll-snap-align: center;
+    color: var(--primary-color);
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+    background-color: var(--background-color);
+  }
+
+  .statCard:hover {
+    transform: translateY(-2px);
+  }
+
+  .statIcon {
+    width: 90px;
+    height: 80px;
+    display: flex;
+    font-size: 30px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .statIcon.individual {
+    background: var(--secondary-light-color);
+    color: var(--secondary-color);
+  }
+
+  .statIcon.organization {
+    background: var(--pending-light-color);
+    color: var(--pending-color);
+  }
+
+  .statContent {
+    flex: 1;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .statLabel {
+    font-size: 1rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: var(--primary-light-color);
+  }
+
+  .statNumber {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .statNumber h1 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .statNumber span {
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  .statNumber.accounts span {
+    color: var(--tertiary-hover-color);
+  }
+
+  .statNumber.individual span {
+    color: var(--secondary-hover-color);
+  }
+
+  .statNumber.organization span {
+    color: var(--pending-hover-color);
+  }
+
+  .managementContent {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    flex-direction: column;
+    background: var(--background-color);
+  }
+
+  .tabNavigation {
+    height: 60px;
+    display: flex;
+    background: var(--background-light-color);
+  }
+
+  .tabBtn {
+    flex: 1;
+    gap: 10px;
+    display: flex;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 400;
+    padding: 15px 20px;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-color);
+    transition: all 0.2s ease;
+    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid var(--background-dark-color);
+    background-color: var(--background-color);
+  }
+
+  .tabBtn:hover {
+    color: var(--background-color);
+    background: var(--tertiary-color);
+    border-bottom: 1px solid var(--tertiary-color);
+  }
+
+  .tabBtn.active {
+    color: var(--background-color);
+    background: var(--tertiary-color);
+    border-bottom: 1px solid var(--tertiary-color);
+  }
+
+  .filtersSection {
+    gap: 10px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .actionButtons {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .refreshBtn {
+    gap: 10px;
+    width: 200px;
+    display: flex;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .refreshBtn:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .addBtn {
+    gap: 10px;
+    width: 200px;
+    display: flex;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 10px;
+    align-items: center;
+    background: transparent;
+    justify-content: center;
+    color: var(--tertiary-color);
+    border: 1px solid var(--tertiary-color);
+  }
+
+  .addBtn:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .buttonIcon {
+    font-size: 24px;
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .userManagementContainer {
+    height: 100%;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

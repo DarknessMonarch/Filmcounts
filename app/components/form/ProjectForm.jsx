@@ -6,6 +6,7 @@ import Loader from "@/app/components/StateLoader";
 import styles from "@/app/styles/form.module.css";
 import { useState, useRef, useEffect } from "react";
 import FormDropdown from "@/app/components/FormDropdown";
+import { IoIosAdd as AddIcon } from "react-icons/io";
 import { BsCameraFill as CameraIcon } from "react-icons/bs";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
@@ -106,8 +107,6 @@ export default function ProjectForm() {
 
   useEffect(() => {
     if (isEditMode && projectId) {
-      // In a real implementation, you would fetch project data here
-      // This is a placeholder to simulate data fetching
       if (projectId) {
         setFormData({
           projectName: "Sample Project",
@@ -118,8 +117,6 @@ export default function ProjectForm() {
           budgeteer: "Budgeteer",
           userRole: "Accountant",
         });
-        // Sample logo URL if available
-        // setLogoUrl("https://example.com/logo.png");
       }
     }
   }, [isEditMode, projectId]);
@@ -191,7 +188,6 @@ export default function ProjectForm() {
     setIsLoading(true);
 
     try {
-      // Prepare form data similar to your original implementation
       const formDataObj = new FormData();
       
       Object.entries(formData).forEach(([key, value]) => {
@@ -204,12 +200,10 @@ export default function ProjectForm() {
         formDataObj.append("logo", logoFile);
       }
 
-      // Simulate API call with a timeout
       setTimeout(() => {
         console.log("Form data submitted:", Object.fromEntries(formDataObj));
         toast.success(`Project ${isEditMode ? "updated" : "created"} successfully`);
         setIsLoading(false);
-        // In a real implementation, you would navigate or refresh data here
       }, 1500);
       
     } catch (error) {
@@ -222,12 +216,10 @@ export default function ProjectForm() {
   const goBack = () => router.back();
 
   const addCompany = () => {
-    // This would typically open a modal or navigate to a form
     toast.info("Add company functionality would open here");
   };
 
   const addUser = () => {
-    // This would typically open a modal or navigate to a form
     toast.info("Add user functionality would open here");
   };
 
@@ -334,7 +326,7 @@ export default function ProjectForm() {
                 className={styles.addButton}
                 onClick={addCompany}
               >
-                +
+                <AddIcon className={styles.addIcon} aria-label="add icon"  />
               </button>
             </div>
           </div>
@@ -366,7 +358,8 @@ export default function ProjectForm() {
                 className={styles.addButton}
                 onClick={addUser}
               >
-                +
+                <AddIcon className={styles.addIcon} aria-label="add icon"  />
+              
               </button>
             </div>
           </div>

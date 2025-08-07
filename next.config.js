@@ -15,6 +15,12 @@ const nextConfig = {
         port: '',
         pathname: '/djuta2tca/image/upload/**',
       },
+    {
+  protocol: 'https',
+  hostname: 'minio.swiftsyn.com',
+  port: '',
+  pathname: '/kamukunjikonnect/**',
+},
     ],
   },
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Popup from "@/app/components/Popup";
 import styles from "@/app/styles/projectCard.module.css";
-import ProjectForm from "@/app/components/form/ProjectForm";
+import ProjectCardForm from "@/app/components/form/ProjectCardForm";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
 import { IoAddOutline as AddIcon } from "react-icons/io5";
@@ -20,12 +20,14 @@ export default function ProjectCard({ data }) {
     setModalOpen(!modalOpen);
   };
 
-  const handleEdit = (projectId) => {
+  const handleEdit = (e, projectId) => {
+    e.stopPropagation(); 
     toggleModal();
     const params = new URLSearchParams(searchParams);
-    ["projectEdit", "projectAdd"].forEach((key) => params.delete(key));
+    ["project", "projectEdit", "projectAdd", "id"].forEach((key) => params.delete(key));
 
-    params.set("projectEdit", projectId);
+    params.set("project", "edit");
+    params.set("id", projectId);
 
     router.push(`${pathname}?${params.toString()}`);
   };
@@ -33,13 +35,14 @@ export default function ProjectCard({ data }) {
   const handleAdd = () => {
     toggleModal();
     const params = new URLSearchParams(searchParams);
-    ["projectEdit", "projectAdd"].forEach((key) => params.delete(key));
+    ["project", "projectEdit", "projectAdd", "id"].forEach((key) => params.delete(key));
 
-    params.set("projectAdd", "Add");
+    params.set("project", "add");
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const handleDelete = (projectId) => {
+  const handleDelete = (e, projectId) => {
+    e.stopPropagation(); 
     toast.error("Project deleted successfully!", {
       style: {
         border: "1px solid #ff3b3b",
@@ -69,14 +72,14 @@ export default function ProjectCard({ data }) {
             <h2>Created: {project.createdAt}</h2>
             <div className={styles.projectActions}>
               <EditIcon
-                onClick={() => handleEdit(project.id)}
+                onClick={(e) => handleEdit(e, project.id)}
                 aria-hidden="true"
                 alt="Edit"
                 aria-label="Edit"
                 className={styles.editIcon}
               />
               <DeleteIcon
-                onClick={() => handleDelete(project.id)}
+                onClick={(e) => handleDelete(e, project.id)}
                 aria-hidden="true"
                 alt="Delete"
                 aria-label="Delete"
@@ -156,7 +159,7 @@ export default function ProjectCard({ data }) {
         Left={0}
         Bottom={0}
         Width={500}
-        Height={900}
+        Height={790}
         OnClose={toggleModal}
         Blur={5}
         Zindex={9999}
@@ -164,7 +167,7 @@ export default function ProjectCard({ data }) {
         BorderRadiusTopRight={15}
         BorderRadiusBottomRight={15}
         BorderRadiusBottomLeft={15}
-        Content={<ProjectForm />}
+        Content={<ProjectCardForm />}
         IsOpen={modalOpen}
       />
     </div>

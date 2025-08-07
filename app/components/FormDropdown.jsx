@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import styles from "@/app/styles/dropdown.module.css";
+import styles from "@/app/styles/formdropdown.module.css";
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { MdKeyboardArrowDown as DropdownIcon } from "react-icons/md";
 
@@ -20,7 +20,6 @@ export default function SearchableDropdown({
   const dropdownRef = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Display text for the selected option
   const getDisplayText = () => {
     if (value) {
       return value[nameKey];
@@ -28,7 +27,6 @@ export default function SearchableDropdown({
     return dropPlaceHolder || "Select an option";
   };
 
-  // Handle clicks outside the dropdown
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -42,20 +40,17 @@ export default function SearchableDropdown({
     };
   }, []);
 
-  // Focus search input when dropdown opens
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isOpen]);
 
-  // Filter options based on search term
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setFilteredOptions(options);
     } else {
       const filtered = options.filter(option => {
-        // Check if the option has the property we're looking for
         if (option[nameKey]) {
           return option[nameKey].toLowerCase().includes(searchTerm.toLowerCase());
         }

@@ -11,11 +11,9 @@ import { usePathname, useRouter } from "next/navigation";
 import ColoredLogo from "@/public/assets/coloredlogo.png";
 
 import { HiChartBar as OverviewIcon } from "react-icons/hi";
-import {
-  BsBuildingsFill as CompanyIcon,
-  BsClipboardFill as AuditTrailIcon,
-} from "react-icons/bs";
+import { BsBuildingsFill as CompanyIcon } from "react-icons/bs";
 import { FaBoxArchive as SupplierIcon } from "react-icons/fa6";
+import { GiTakeMyMoney as BudgetIcon} from "react-icons/gi";
 import {
   HiMiniUserGroup as TeamIcon,
   HiMiniUser as UserIcon,
@@ -28,14 +26,78 @@ import {
 import { TbHelpSquareRoundedFilled as HelpIcon } from "react-icons/tb";
 import { IoIosAlbums as SidePanelIcon } from "react-icons/io";
 
+import { HiMiniUsers as UsersIcon } from "react-icons/hi2";
+import { IoIosAlbums as AuditTrailIcon } from "react-icons/io";
+import { MdSettingsInputComposite as ConfigurationIcon } from "react-icons/md";
+import { SiOnlyoffice as DepartmentIcon } from "react-icons/si";
 export default function SideNavComponent() {
-  const [username, setUsername] = useState("penguin");
-  const [userType, setUserType] = useState("user");
+  const { user, isAuth } = useAuthStore();
   const { isOpen, toggleDrawer } = useDrawerStore();
-  const { isAuth, toggleAuth } = useAuthStore();
   const [isMobile, setMobile] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const getUserType = () => {
+    if (pathname.includes("/page/admin/")) {
+      return "admin";
+    } else if (pathname.includes("/page/organization/")) {
+      return "organization";
+    } else if (pathname.includes("/page/user/")) {
+      return "user";
+    }
+    return "user";
+  };
+
+  const userType = getUserType();
+
+  const getOrganizationSlug = () => {
+    if (userType === "organization") {
+      const pathParts = pathname.split("/");
+      const orgIndex = pathParts.indexOf("organization");
+      if (orgIndex !== -1 && pathParts[orgIndex + 1]) {
+        return pathParts[orgIndex + 1];
+      }
+    }
+    return null;
+  };
+
+  const organizationSlug = getOrganizationSlug();
+
+  const getUserDisplayName = () => {
+    if (!user) return "User";
+
+    if (user.username) return user.username;
+
+    if (user.email) {
+      return user.email.split("@")[0];
+    }
+
+    return "User";
+  };
+
+  const isUserAdmin = () => {
+    if (!user?.organizations) return false;
+
+    return user.organizations.some(
+      (org) =>
+        org.roles &&
+        org.roles.some((role) => role === "ADMIN" || role === "ADMINISTRATOR")
+    );
+  };
+
+  const getUserOrganizations = () => {
+    return user?.organizations || [];
+  };
+
+  const hasRole = (roleName) => {
+    if (!user?.organizations) return false;
+
+    return user.organizations.some(
+      (org) =>
+        org.roles &&
+        org.roles.some((role) => role.toUpperCase() === roleName.toUpperCase())
+    );
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,8 +114,8 @@ export default function SideNavComponent() {
   const getBasePath = () => {
     if (userType === "admin") {
       return "/page/admin/";
-    } else if (userType === "organization") {
-      return "/page/organization/";
+    } else if (userType === "organization" && organizationSlug) {
+      return `/page/organization/${organizationSlug}/`;
     } else {
       return "/page/user/";
     }
@@ -61,7 +123,7 @@ export default function SideNavComponent() {
 
   const isLinkActive = (href) => {
     const fullPath = getBasePath() + href;
-    
+
     if (pathname === fullPath) return true;
 
     const linkLastSegment = href.split("/").pop();
@@ -92,16 +154,6 @@ export default function SideNavComponent() {
         label: "Dashboard",
       },
       {
-        href: "projects",
-        icon: <ProjectIcon className={styles.sideNavIcon} aria-hidden="true" />,
-        label: "Projects",
-      },
-      {
-        href: "team",
-        icon: <TeamIcon className={styles.sideNavIcon} aria-hidden="true" />,
-        label: "Team",
-      },
-      {
         href: "company",
         icon: <CompanyIcon className={styles.sideNavIcon} aria-hidden="true" />,
         label: "Company",
@@ -113,6 +165,29 @@ export default function SideNavComponent() {
         ),
         label: "Suppliers",
       },
+      {
+        href: "departments",
+        icon: (
+          <DepartmentIcon className={styles.sideNavIcon} aria-hidden="true" />
+        ),
+        label: "Departments",
+      },
+      {
+        href: "projects",
+        icon: <ProjectIcon className={styles.sideNavIcon} aria-hidden="true" />,
+        label: "Projects",
+      },
+
+      {
+        href: "budget",
+        icon: <BudgetIcon className={styles.sideNavIcon} aria-hidden="true" />,
+        label: "Budget",
+      },
+      {
+        href: "team",
+        icon: <TeamIcon className={styles.sideNavIcon} aria-hidden="true" />,
+        label: "Team",
+      }
     ],
     admin: [
       {
@@ -124,7 +199,7 @@ export default function SideNavComponent() {
       },
       {
         href: "users",
-        icon: <UserIcon className={styles.sideNavIcon} aria-hidden="true" />,
+        icon: <UsersIcon className={styles.sideNavIcon} aria-hidden="true" />,
         label: "Users Management",
       },
       {
@@ -137,7 +212,10 @@ export default function SideNavComponent() {
       {
         href: "configuration",
         icon: (
-          <AuditTrailIcon className={styles.sideNavIcon} aria-hidden="true" />
+          <ConfigurationIcon
+            className={styles.sideNavIcon}
+            aria-hidden="true"
+          />
         ),
         label: "System Configuration",
       },
@@ -182,6 +260,15 @@ export default function SideNavComponent() {
     }
   };
 
+  const shouldShowOrgPrompt = () => {
+    return (
+      userType === "user" &&
+      isAuth &&
+      user &&
+      getUserOrganizations().length === 0
+    );
+  };
+
   return (
     <div
       className={`${styles.sideNavContainer} ${
@@ -197,14 +284,14 @@ export default function SideNavComponent() {
           priority={true}
         />
         <div onClick={CloseSideNav}>
-        <SidePanelIcon
-          className={styles.sidepanelicon}
-          aria-hidden="true"
-          aria-label="side panel icon"
-        />
+          <SidePanelIcon
+            className={styles.sidepanelicon}
+            aria-hidden="true"
+            aria-label="side panel icon"
+          />
         </div>
-      
       </div>
+
       <div className={styles.sideNavScroller}>
         <div className={styles.sideNavScrollerTop}>
           {getNavLinks().map((link, index) => (
@@ -220,6 +307,7 @@ export default function SideNavComponent() {
             </Link>
           ))}
         </div>
+
         <div className={styles.sideNavUtilities}>
           {navLinks.utilities.map((link, index) => (
             <Link
@@ -237,23 +325,45 @@ export default function SideNavComponent() {
       </div>
 
       <div className={styles.sideNavBottom}>
-        <div className={`${styles.sideNavAdverts} skeleton`}>
-          <Image
-            className={styles.advertImage}
-            src={AdBg}
-            alt="Advertisement"
-            fill
-            sizes="100%"
-            priority={true}
-          />
-          <div className={styles.advertText}>
-            <h1>Have an organisation</h1>
-            <p>
-              Sign up for more features such as team management among other
-              features
-            </p>
+        {shouldShowOrgPrompt() ? (
+          <div className={`${styles.sideNavAdverts} skeleton`}>
+            <Image
+              className={styles.advertImage}
+              src={AdBg}
+              alt="Advertisement"
+              fill
+              sizes="100%"
+              priority={true}
+            />
+            <div className={styles.advertText}>
+              <h1>Have an organisation?</h1>
+              <p>
+                Sign up for more features such as team management among other
+                features
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className={styles.userInfo}>
+            {isAuth && user && (
+              <>
+                <div className={styles.userDetails}>
+                  <h3>{getUserDisplayName()}</h3>
+                  <p>{user.email}</p>
+                  {getUserOrganizations().length > 0 && (
+                    <div className={styles.userOrgs}>
+                      <small>
+                        {getUserOrganizations()
+                          .map((org) => org.organization.name)
+                          .join(", ")}
+                      </small>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

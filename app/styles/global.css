@@ -7,17 +7,20 @@
     --tertiary-color: #26cf96;
     --secondary-color: #ff3b3b;
     --background-color: #ffffff;
+    --pending-light-color: #fff8e6;
+    --pending-hover-color: #eba92f;
     --primary-light-color: #4c5564;
+    --primary-lighter-color: #7f8183;
     --tertiary-light-color: #d8f7ec;
     --tertiary-hover-color: #58e7b7;
-    --tertiary-lighter-color: #8aeccc;
+    --tertiary-lighter-color: #cefaec;
     --secondary-light-color: #fce3e3;
     --background-light-color: #f3f7f6;
+    --background-lighter-color: #fbfcfb;
     --background-dark-color: #e0e0e0;
     --secondary-hover-color: #fc5757;
     --secondary-lighter-color: #fcadad;
-    --pending-light-color: #fff8e6;
-    --shadow-box: rgba(76, 85, 100, 0.1) 0px 2px 44px;
+    --shadow-box: rgba(216, 217, 218, 0.2) 0px 8px 24px;
     --nav-shadow-box: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 
     margin: 0;
@@ -25,7 +28,7 @@
     box-sizing: border-box;
 
     /* global-width */
-    --sidenav-width: 350px;
+    --sidenav-width: 300px;
     --navbar-height: 60px;
     --termcard-height: 200px;
     --sidenav-mobile-width: 80%;

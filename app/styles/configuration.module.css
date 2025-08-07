@@ -1,0 +1,301 @@
+@media screen {
+  .systemConfigContainer {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .configNav {
+    gap: 10px;
+    padding: 5px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    min-height: fit-content;
+    background-color: var(--background-color);
+  }
+
+  .navTab {
+    flex: 1;
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--light-color);
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+  }
+
+  .navTab:hover {
+    color: var(--primary-light-color);
+    background: var(--background-light-color);
+  }
+
+  .navTabActive {
+    background: var(--tertiary-color);
+    color: var(--background-color);
+  }
+
+  .navTabActive:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .configMainContent {
+    background: var(--background-color);
+    border-radius: 10px;
+    flex: 1;
+  }
+
+  .configContent {
+    width: 100%;
+  }
+
+  .configContent h2 {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 20px;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--background-dark-color);
+  }
+
+  .configSection {
+    gap: 30px;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+  }
+
+  .sectionGroup {
+    gap: 20px;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    flex-direction: column;
+    border: 1px solid var(--tertiary-light-color);
+    border-left: 4px solid var(--tertiary-color);
+  }
+
+  .sectionGroup h3 {
+    display: flex;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    align-items: center;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--background-light-color);
+  }
+
+  .formRow {
+    gap: 5px;
+    display: flex;
+  }
+
+  .formRow .formGroup {
+    flex: 1;
+  }
+
+  .formGroup {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formGroup label {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--primary-light-color);
+  }
+
+  .textInput {
+    width: 100%;
+    border: none;
+    height: 60px;
+    outline: none;
+    padding: 15px;
+    font-weight: 200;
+    border-radius: 10px;
+    color: var(--light-color);
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .textInput:-webkit-autofill,
+  .textInput:-webkit-autofill:hover,
+  .textInput:-webkit-autofill:focus,
+  .textInput:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--light-color) !important;
+  }
+
+  .textInput::placeholder {
+    font-size: 0.8rem;
+    font-weight: 200;
+    text-transform: capitalize;
+    color: var(--light-color);
+  }
+
+  .inputGroup {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .visibilityBtn {
+    border: 1px solid var(--background-dark-color);
+    background: var(--background-color);
+    transition: all 0.2s ease;
+    justify-content: center;
+    color: var(--light-color);
+    align-items: center;
+    border-radius: 10px;
+    font-size: 24px;
+    flex-shrink: 0;
+    height: 60px;
+    outline: none;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+  }
+
+  .visibilityBtn:hover {
+    background: var(--background-light-color);
+    color: var(--primary-light-color);
+  }
+
+  .generateBtn {
+    transition: background-color 0.2s ease;
+    background: var(--tertiary-color);
+    color: var(--background-color);
+    border-radius: 10px;
+    white-space: nowrap;
+    padding: 10px 16px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: none;
+    height: 60px;
+  }
+
+  .generateBtn:hover {
+    background: var(--tertiary-hover-color);
+  }
+
+  .toggleContainer {
+    gap: 10px;
+    display: flex;
+    margin-top: 10px;
+    align-items: flex-start;
+  }
+
+  .toggleInput {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 5px;
+    accent-color: var(--tertiary-color);
+  }
+
+  .toggleLabel {
+    cursor: pointer;
+    line-height: 1.4;
+    font-size: 0.8rem;
+    color: var(--light-color);
+  }
+
+  .formActions {
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    border-top: 1px solid var(--background-dark-color);
+  }
+
+  .saveBtn {
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 0.8rem;
+    padding: 12px 24px;
+    border-radius: 10px;
+    color: var(--background-color);
+    background: var(--tertiary-color);
+    transition: background-color 0.2s ease;
+  }
+
+  .saveBtn:hover {
+    background: var(--tertiary-hover-color);
+  }
+
+  .testBtn {
+    height: 50px;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 0.8rem;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--tertiary-color);
+    transition: background-color 0.2s ease;
+    border: 1px solid var(--tertiary-color);
+  }
+
+  .testBtn:hover {
+    border: 1px solid var(--tertiary-color);
+    background: var(--tertiary-color);
+    color: var(--background-color);
+  }
+
+  /* Status Indicators */
+  .statusIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .statusIndicator.connected {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .statusIndicator.disconnected {
+    background: var(--secondary-light-color);
+    color: var(--secondary-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .systemConfigContainer {
+    height: 100%;
+  }
+
+  .configNav {
+    flex-direction: row;
+  }
+
+  .configSection {
+    padding: 30px;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+}
+
+/* large screens : Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

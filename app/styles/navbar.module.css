@@ -12,7 +12,7 @@
     border-radius: 0 0 30px 30px;
     box-shadow: var(--shadow-box);
     -webkit-backdrop-filter: blur(4px); 
-    background: rgba(253, 253, 253, 0.7); 
+    background: var(--background-color); 
   }
 
   .navWrapper {

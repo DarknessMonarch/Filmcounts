@@ -1,0 +1,259 @@
+/* account.module.css */
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accountComponent {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.accountComponentBgImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.accountComponentBgImage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.accountWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  z-index: 2;
+  position: relative;
+}
+
+.accountContainer {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: var(--shadow-box);
+}
+
+.accountHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.accountHeader h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.accountHeader p {
+  color: var(--light-color);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.accountOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accountOption {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border: 2px solid var(--background-dark-color);
+  border-radius: 8px;
+  background: var(--background-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 1;
+  transform: scale(1);
+  width: 100%;
+}
+
+.accountOption:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.accountOption:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.accountOption.selected {
+  background: var(--background-light-color);
+  transform: scale(0.98);
+}
+
+.accountOption.primary:hover {
+  border-color: var(--primary-color);
+}
+
+.accountOption.secondary:hover {
+  border-color: var(--secondary-color);
+}
+
+.accountOption.tertiary:hover {
+  border-color: var(--tertiary-color);
+}
+
+.accountIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 1.25rem;
+}
+
+.primaryIcon {
+  background: rgba(45, 55, 72, 0.1);
+  color: var(--primary-color);
+}
+
+.secondaryIcon {
+  background: rgba(255, 59, 59, 0.1);
+  color: var(--secondary-color);
+}
+
+.tertiaryIcon {
+  background: rgba(38, 207, 150, 0.1);
+  color: var(--tertiary-color);
+}
+
+.accountContent {
+  flex: 1;
+  text-align: left;
+}
+
+.accountContent h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 4px;
+  margin: 0;
+}
+
+.accountRoles {
+  font-size: 0.875rem;
+  color: var(--light-color);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.accountContent p {
+  font-size: 0.875rem;
+  color: var(--light-color);
+  margin: 0;
+  margin-top: 4px;
+}
+
+.accountArrow {
+  color: var(--light-color);
+  font-size: 1rem;
+}
+
+.accountFooter {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.backButton {
+  background: transparent;
+  color: var(--light-color);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.backButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(45, 55, 72, 0.3);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 48em) {
+  .accountWrapper {
+    padding: 16px;
+  }
+  
+  .accountContainer {
+    padding: 24px;
+  }
+  
+  .accountHeader h1 {
+    font-size: 1.5rem;
+  }
+  
+  .accountOption {
+    padding: 20px;
+    gap: 12px;
+  }
+  
+  .accountIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .accountContent h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Tablet styles */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+  .accountContainer {
+    max-width: 500px;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+  .accountContainer {
+    max-width: 650px;
+  }
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+  .accountContainer {
+    max-width: 700px;
+  }
+}

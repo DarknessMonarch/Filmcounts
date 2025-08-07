@@ -1,0 +1,529 @@
+@media screen {
+  .auditContainer {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .auditFilters {
+    background: var(--background-color);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .auditFilters h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+
+  .filterGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .filterRow {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .filterRow > * {
+    flex: 1;
+  }
+
+  .filterInput {
+    padding: 10px 12px;
+    border: 1px solid var(--background-dark-color);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: var(--primary-light-color);
+    background: var(--background-color);
+    transition: border-color 0.2s ease;
+  }
+
+  .filterInput:focus {
+    outline: none;
+    border-color: var(--tertiary-color);
+  }
+
+  .filterInput::placeholder {
+    color: var(--light-color);
+  }
+
+  .filterActions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .searchBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: var(--tertiary-color);
+    color: var(--background-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .searchBtn:hover:not(:disabled) {
+    background: var(--tertiary-hover-color);
+  }
+
+  .searchBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .resetBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid var(--background-dark-color);
+    border-radius: 10px;
+    background: var(--background-color);
+    color: var(--primary-light-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .resetBtn:hover {
+    background: var(--background-light-color);
+    border-color: var(--light-color);
+  }
+
+  .exportBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid var(--tertiary-color);
+    border-radius: 10px;
+    background: var(--background-color);
+    color: var(--tertiary-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .exportBtn:hover:not(:disabled) {
+    background: var(--tertiary-lighter-color);
+  }
+
+  .exportBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .resultsSummary {
+    padding: 10px 15px;
+    background: var(--background-light-color);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: var(--primary-light-color);
+    border-left: 4px solid var(--tertiary-color);
+  }
+
+  .auditTable {
+    flex: 1;
+    background: var(--background-color);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 15px;
+  }
+
+  .loadingContainer span {
+    color: var(--light-color);
+    font-size: 0.875rem;
+  }
+
+  .emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 15px;
+  }
+
+  .emptyIcon {
+    font-size: 48px;
+    color: var(--light-color);
+  }
+
+  .emptyState h3 {
+    font-size: 1.125rem;
+    color: var(--primary-light-color);
+    margin: 0;
+  }
+
+  .emptyState p {
+    color: var(--light-color);
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .tableContainer {
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .auditRow {
+    border-bottom: 1px solid var(--background-light-color);
+    transition: background-color 0.2s ease;
+  }
+
+  .auditRow:hover {
+    background: var(--background-lighter-color);
+  }
+
+  .auditRowHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    cursor: pointer;
+  }
+
+  .auditRowMain {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .methodAndStatus {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .httpMethod {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .httpMethod.get {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .httpMethod.post {
+    background: var(--pending-light-color);
+    color: var(--pending-color);
+  }
+
+  .httpMethod.put, .httpMethod.patch {
+    background: var(--background-light-color);
+    color: var(--primary-light-color);
+  }
+
+  .httpMethod.delete {
+    background: var(--secondary-light-color);
+    color: var(--secondary-color);
+  }
+
+  .responseCode {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .responseCodeSuccess {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .responseCodeWarning {
+    background: var(--pending-light-color);
+    color: var(--pending-color);
+  }
+
+  .responseCodeError {
+    background: var(--secondary-light-color);
+    color: var(--secondary-color);
+  }
+
+  .responseCodeInfo {
+    background: var(--background-light-color);
+    color: var(--primary-light-color);
+  }
+
+  .statusIconSuccess {
+    color: var(--tertiary-color);
+    font-size: 18px;
+  }
+
+  .statusIconError {
+    color: var(--secondary-color);
+    font-size: 18px;
+  }
+
+  .statusIconWarning {
+    color: var(--pending-color);
+    font-size: 18px;
+  }
+
+  .statusIconInfo {
+    color: var(--primary-light-color);
+    font-size: 18px;
+  }
+
+  .uriAndTime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .uri {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .timestamp {
+    font-size: 0.75rem;
+    color: var(--light-color);
+    white-space: nowrap;
+  }
+
+  .additionalInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .remoteAddress {
+    font-size: 0.75rem;
+    color: var(--light-color);
+  }
+
+  .processTime {
+    font-size: 0.75rem;
+    color: var(--light-color);
+    background: var(--background-light-color);
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+
+  .expandIcon {
+    font-size: 24px;
+    color: var(--light-color);
+    transition: transform 0.2s ease;
+  }
+
+  .auditRowDetails {
+    padding: 20px;
+    background: var(--background-lighter-color);
+    border-top: 1px solid var(--background-light-color);
+  }
+
+  .detailsGrid {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+
+  .detailSection {
+    flex: 1;
+  }
+
+  .detailSection h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+  }
+
+  .detailItem {
+    display: flex;
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+
+  .detailItem label {
+    font-size: 0.75rem;
+    color: var(--light-color);
+    font-weight: 500;
+    min-width: 100px;
+  }
+
+  .detailItem span {
+    font-size: 0.75rem;
+    color: var(--primary-light-color);
+    flex: 1;
+  }
+
+  /* JSON Sections */
+  .jsonSections {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .jsonSection {
+    border: 1px solid var(--background-dark-color);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .jsonHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--background-light-color);
+    border-bottom: 1px solid var(--background-dark-color);
+  }
+
+  .jsonHeader h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .jsonHeader button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background: var(--background-color);
+    color: var(--primary-light-color);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .jsonHeader button:hover {
+    background: var(--background-dark-color);
+  }
+
+  .jsonContent {
+    padding: 15px;
+    background: var(--background-color);
+    font-size: 0.75rem;
+    color: var(--primary-light-color);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--background-color);
+    border-radius: 10px;
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .pageBtn {
+    padding: 8px 110px;
+    border: 1px solid var(--background-dark-color);
+    border-radius: 10px;
+    background: var(--background-color);
+    color: var(--primary-light-color);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pageBtn:hover:not(:disabled) {
+    background: var(--background-light-color);
+    border-color: var(--tertiary-color);
+  }
+
+  .pageBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .pageInfo {
+    font-size: 0.875rem;
+    color: var(--primary-light-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .auditContainer {
+    height: 100%;
+
+  }
+  
+  .filterRow {
+    flex-direction: row;
+  }
+  
+  .filterActions {
+    justify-content: flex-start;
+  }
+  
+  .detailsGrid {
+    flex-direction: row;
+  }
+  
+  .jsonSections {
+    flex-direction: row;
+  }
+  
+  .jsonSection {
+    flex: 1;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+
+}
+
+/* large screens : Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+ 
+  .tableContainer {
+    max-height: 700px;
+  }
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+
+}

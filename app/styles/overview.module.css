@@ -1,0 +1,330 @@
+@media screen {
+  .dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .topSection {
+    display: flex;
+    gap: 10px;
+  }
+
+  .leftPanel {
+    flex: 2;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .rightPanel {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    min-width: 350px;
+    flex-direction: column;
+  }
+
+  .statsRow {
+    display: flex;
+    gap: 10px;
+  }
+
+  .rightStatsRow {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .statCard {
+    flex: 1;
+    gap: 15px;
+    padding: 20px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 15px;
+    align-items: center;
+    color: var(--primary-color);
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+    background-color: var(--background-color);
+    box-shadow: var(--shadow-box);
+  }
+
+  .statCard:hover {
+    transform: translateY(-2px);
+  }
+
+  .statIcon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    font-size: 24px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .accountsIcon {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .incomeIcon {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .individualIcon {
+    background: var(--secondary-light-color);
+    color: var(--secondary-color);
+  }
+
+  .organizationIcon {
+    background: var(--pending-light-color);
+    color: var(--pending-color);
+  }
+
+  .sessionsIcon {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .healthIcon {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .statContent {
+    flex: 1;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .statLabel {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+  }
+
+  .statValue {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .statGrowth {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--light-color);
+  }
+
+  .healthStatus {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 20px;
+    width: fit-content;
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+  }
+
+  .healthSubtext {
+    font-size: 0.8rem;
+    color: var(--light-color);
+    margin-top: 5px;
+  }
+
+  .chartContainer {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    min-height: 400px;
+    border-radius: 15px;
+    flex-direction: column;
+    background-color: var(--background-color);
+    box-shadow: var(--shadow-box);
+  }
+
+  .chartHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .chartControls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .authIcon {
+    font-size: 16px;
+  }
+
+  .chartTabs {
+    display: flex;
+    gap: 20px;
+  }
+
+  .tabBtn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--light-color);
+    transition: all 0.2s ease;
+  }
+
+  .tabBtn.active {
+    background: var(--tertiary-light-color);
+    color: var(--tertiary-color);
+    font-weight: 500;
+  }
+
+  .viewAll {
+    gap: 5px;
+    display: flex;
+    font-size: 0.9rem;
+    cursor: pointer;
+    align-items: center;
+    color: var(--light-color);
+  }
+
+  .chartArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chartSvg {
+    flex: 1;
+    width: 100%;
+    min-height: 250px;
+  }
+
+  .legend {
+    gap: 20px;
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .legendItem {
+    gap: 8px;
+    display: flex;
+    font-size: 0.9rem;
+    align-items: center;
+    color: var(--primary-color);
+  }
+
+  .legendDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .thisYear {
+    background: var(--tertiary-color);
+  }
+
+  .lastYear {
+    background: var(--light-color);
+  }
+
+  .activitiesPanel {
+    padding: 20px;
+    border-radius: 15px;
+    background-color: var(--background-color);
+    box-shadow: var(--shadow-box);
+  }
+
+  .activitiesHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .activitiesTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .activityItem {
+    gap: 5px;
+    display: flex;
+    padding: 15px 0;
+    flex-direction: column;
+    border-bottom: 1px solid var(--background-light-color);
+  }
+
+  .activityItem:last-child {
+    border-bottom: none;
+  }
+
+  .activityText {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+  }
+
+  .activityTime {
+    font-size: 0.8rem;
+    color: var(--light-color);
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .dashboardContainer {
+    gap: 20px;
+  }
+
+  .topSection {
+    gap: 20px;
+  }
+
+  .leftPanel {
+    gap: 20px;
+  }
+
+  .rightPanel {
+    gap: 20px;
+  }
+
+  .statsRow {
+    gap: 20px;
+  }
+
+  .rightStatsRow {
+    gap: 20px;
+  }
+}
+
+/* ipad pro screens & laptop */
+@media only screen and (min-width: 49em) and (max-width: 64em) {
+  .topSection {
+    flex-direction: column;
+  }
+
+  .rightPanel {
+    min-width: auto;
+  }
+
+  .rightStatsRow {
+    flex-direction: row;
+  }
+}
+
+/* large screens : Desktop and 4k screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+}
+
+/* 5k screens and above */
+@media only screen and (min-width: 91em) {
+}

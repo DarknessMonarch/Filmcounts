@@ -1,0 +1,202 @@
+/* Team Page Styles */
+.teamSection {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teamSection h2 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.teamSection p {
+  font-size: 0.9rem;
+  color: var(--primary-light-color);
+}
+
+.teamInviteSection {
+  width: 100%;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--background-color);
+  box-shadow: var(--shadow-box);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.teamInviteSection h3 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.inviteInputContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+}
+
+.inviteInput {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--background-dark-color);
+  font-size: 0.9rem;
+}
+
+.roleSelect {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--background-dark-color);
+  font-size: 0.9rem;
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  min-width: 120px;
+}
+
+.inviteButton {
+  padding: 12px 20px;
+  border-radius: 10px;
+  background-color: var(--tertiary-color);
+  color: var(--background-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.inviteButton:hover {
+  background-color: var(--tertiary-hover-color);
+}
+
+.teamMembersSection {
+  width: 100%;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--background-color);
+  box-shadow: var(--shadow-box);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.teamMembersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teamMembersHeader h3 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.searchInput {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--background-dark-color);
+  font-size: 0.9rem;
+  width: 200px;
+}
+
+.teamMembersList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.teamMemberItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--background-lighter-color);
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.memberInfo h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.memberInfo p {
+  font-size: 0.9rem;
+  color: var(--primary-light-color);
+}
+
+.pendingBadge {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background-color: var(--pending-light-color);
+  color: var(--pending-color);
+  align-self: flex-start;
+}
+
+.memberActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.deleteButton {
+  padding: 8px 15px;
+  border-radius: 10px;
+  background-color: var(--secondary-light-color);
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.deleteButton:hover {
+  background-color: var(--secondary-lighter-color);
+}
+
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  .inviteInputContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .teamMembersHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .searchInput {
+    width: 100%;
+  }
+  
+  .teamMemberItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .memberActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .roleSelect {
+    width: 100%;
+  }
+}

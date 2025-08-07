@@ -37,10 +37,16 @@ export default function PageLayout({ children }) {
     );
   })();
 
+  const isSettings = pathname.endsWith("/settings");
+
   return (
     <div className={styles.pageLayout} onClick={CloseSideNav}>
       <SideNav />
-      <div className={styles.pageContent}>
+      <div
+        className={`${styles.pageContent} ${
+          isSettings ? "" : styles.addPadding
+        }  `}
+      >
         <DeskNavbar
           title={
             lastSegment.charAt(0).toUpperCase() +

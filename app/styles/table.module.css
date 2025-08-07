@@ -14,8 +14,10 @@
     gap: 10px;
     display: flex;
     padding: 15px;
-    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
+
   }
 
   .tableHeader h1 {
@@ -29,7 +31,7 @@
   .tableControls {
     gap: 10px;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
   }
 
   .statusBadge {
@@ -41,17 +43,17 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .statusApproved {
     color: var(--tertiary-color);
     background-color: var(--tertiary-light-color);
   }
-  
+
   .statusFailed {
     color: var(--secondary-color);
     background-color: var(--secondary-light-color);
   }
-  
+
   .statusPending {
     color: var(--pending-color);
     background-color: var(--pending-light-color);
@@ -62,9 +64,11 @@
     height: 40px;
     display: flex;
     padding: 10px;
+    flex: 1 1 auto;
     border-radius: 10px;
     align-items: center;
     border: 1px solid var(--background-light-color);
+
   }
 
   .searchIcon {
@@ -83,9 +87,39 @@
   .dateInput {
     height: 40px;
     padding: 10px;
+    flex: 1 1 auto;
     font-size: 0.8rem;
     border-radius: 10px;
     border: 1px solid var(--background-light-color);
+  }
+
+  .customButton {
+    gap: 10px;
+    height: 40px;
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+    flex: 1 1 auto;
+    align-items: center;
+    border-radius: 10px;
+    justify-content: center;
+    color: var(--tertiary-color);
+    background-color: transparent;
+    border: 1px solid var(--tertiary-color);
+  }
+
+  .customButton:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .customButtonIcon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .customButtonIcon:hover {
+    color: var(--background-color);
   }
 
   .downloadButton {
@@ -93,6 +127,7 @@
     display: flex;
     padding: 10px;
     cursor: pointer;
+    flex: 1 1 auto;
     align-items: center;
     border-radius: 10px;
     justify-content: center;
@@ -107,6 +142,7 @@
 
   .downloadIcon {
     font-size: 24px;
+    flex-shrink: 0;
     color: var(--light-color);
   }
 
@@ -151,7 +187,6 @@
   .clickableRow {
     cursor: pointer;
   }
-  
 
   .clickableRow:hover {
     background-color: var(--background-light-color);
@@ -216,7 +251,7 @@
   }
 
   .paginationContainer h2 {
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-weight: 300;
     color: var(--light-color);
   }
@@ -232,7 +267,7 @@
     padding: 10px;
     display: flex;
     cursor: pointer;
-    font-size: .8rem;
+    font-size: 0.8rem;
     border-radius: 10px;
     align-items: center;
     justify-content: center;
@@ -263,15 +298,11 @@
   .paginationButton:hover .paginationIcon {
     color: var(--tertiary-color);
   }
-
- 
 }
 
 /* Using it as global style for larger devices */
 @media only screen and (min-width: 48em) {
-  .tableHeader {
-    flex-direction: row;
-  }
+ 
 }
 
 /* ipad pro screens & laptop */

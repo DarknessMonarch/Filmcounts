@@ -73,20 +73,20 @@
     display: flex;
     cursor: pointer;
     align-items: center;
-    border-radius: 15px;
-
+    border-radius: 10px;
   }
 
   .sideNavIcon {
-    font-size: 20px;
+    font-size: 15px;
     color: var(--tertiary-color);
+
   }
 
   .sideNavLinkContainer h1 {
     font-size: .9rem;
     font-weight: 300;
     text-transform: capitalize;
-    color: var(--primary-color);
+    color: var(--primary-light-color);
   }
 
   .sideNavLinkContainer:hover {
@@ -109,10 +109,11 @@
 
 
   .sideNavLinkIconContainer {
-    width: 40px;
+    gap: 15px;
+    width: 35px;
     height:100%;
     display: flex;
-    border-radius: 15px;
+    border-radius: 8px;
     align-items: center;
     justify-content: center;
     box-shadow: var(--nav-shadow-box);
@@ -141,13 +142,13 @@
     display: flex;
     min-height: 150px;
     position: relative;
-    border-radius: 15px;
+    border-radius: 10px;
     height: fit-content;
     flex-direction: column;
   }
 
   .sideNavUtilities {
-    gap: 10px;
+    gap: 15px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -174,7 +175,6 @@
 
   .advertText p {
     font-size: 1rem;
-    font-weight: 300;
   }
 
 
@@ -188,8 +188,5 @@
     width: var(--sidenav-width);
   }
 
-  .advertText h1 {
-    font-size: 1.4rem;
-  }
 
 }

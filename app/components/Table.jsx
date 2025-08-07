@@ -2,7 +2,8 @@
 
 import { toast } from "sonner";
 import { useState } from "react";
-import Popup from "@/app/components/Popup";
+
+import Popup from "@/app/components/Popup"; 
 import Nothing from "@/app/components/Nothing";
 import styles from "@/app/styles/table.module.css";
 import NoDataImg from "@/public/assets/noData.png";
@@ -15,6 +16,7 @@ import {
   MdOutlineFileDownload as DownloadIcon,
   MdEdit as EditIcon,
   MdDelete as DeleteIcon,
+  MdAdd as AddIcon,
 } from "react-icons/md";
 
 export default function ReusableTable({
@@ -28,11 +30,17 @@ export default function ReusableTable({
   showEditButton = true,
   showDeleteButton = true,
   statusKey = "status",
+  showCustomButton = false,
+  customButtonLabel = "Add",
+  customButtonIcon = AddIcon,
+  onCustomButtonClick,
+  customButtonContent,
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [modalOpen, setModalOpen] = useState(false);
+  const [customModalOpen, setCustomModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -41,13 +49,36 @@ export default function ReusableTable({
     setModalOpen(!modalOpen);
   };
 
-  const handleEdit = (id) => {
-    toggleModal();
+  const toggleCustomModal = () => {
+    setCustomModalOpen(!customModalOpen);
+  };
+
+  const handleEdit = (item) => {
     const params = new URLSearchParams(searchParams);
-    ["projectEdit", "projectAdd", `${title}Edit`].forEach((key) => params.delete(key));
-  
-    params.set(`${title}Edit`, id);
-    router.push(`${pathname}?${params.toString()}`);  
+    const titleLower = title.toLowerCase();
+    
+    // Clear any existing edit/add parameters
+    ["projectEdit", "projectAdd", `${title}Edit`, "requisition", "reconciliation"].forEach((key) => params.delete(key));
+    params.delete("id");
+    
+    // Set the correct parameters based on the title (form type)
+    // For specific forms that need special parameter names
+    if (titleLower === "requisition") {
+      params.set("requisition", "edit");
+      params.set("id", item.id);
+    } else if (titleLower === "reconciliation") {
+      params.set("reconciliation", "edit");
+      params.set("id", item.id);
+    } else {
+      // For all other existing components, use the original pattern
+      params.set(`${title}Edit`, item.id);
+    }
+    
+    // Update the URL to trigger form re-render in edit mode
+    router.push(`${pathname}?${params.toString()}`);
+    
+    // Open the modal
+    toggleModal();
   };
 
   const handleDelete = (projectId) => {
@@ -60,6 +91,30 @@ export default function ReusableTable({
     });
   };
 
+  const handleCustomButton = () => {
+    if (onCustomButtonClick) {
+      onCustomButtonClick();
+    }
+    
+    // Set URL parameters for add mode only for specific forms that need it
+    const params = new URLSearchParams(searchParams);
+    const titleLower = title.toLowerCase();
+    
+    if (titleLower === "requisition") {
+      params.set("requisition", "add");
+      params.delete("id");
+      router.push(`${pathname}?${params.toString()}`);
+    } else if (titleLower === "reconciliation") {
+      params.set("reconciliation", "add");
+      params.delete("id");
+      router.push(`${pathname}?${params.toString()}`);
+    }
+    // For other components, don't modify URL parameters - let them handle it as before
+    
+    if (customButtonContent) {
+      toggleCustomModal();
+    }
+  };
 
   const filteredData = data.filter((item) => {
     return Object.values(item).some(
@@ -92,7 +147,6 @@ export default function ReusableTable({
 
   const handleDownload = () => {
     toast.success("Download successful");
- 
   };
 
   const handleRowClick = (item) => {
@@ -131,6 +185,7 @@ export default function ReusableTable({
   };
 
   const showActionColumn = showEditButton || showDeleteButton;
+  const CustomButtonIcon = customButtonIcon;
 
   return (
     <div className={styles.tableContainer}>
@@ -158,6 +213,21 @@ export default function ReusableTable({
             value={currentDate}
             onChange={handleDateChange}
           />
+          {showCustomButton && (
+            <button 
+              className={styles.customButton} 
+              onClick={handleCustomButton}
+              title={customButtonLabel}
+            >
+              <CustomButtonIcon
+                className={styles.customButtonIcon}
+                aria-hidden="true"
+                alt={customButtonLabel}
+                aria-label={customButtonLabel}
+              />
+              {customButtonLabel}
+            </button>
+          )}
           <button className={styles.downloadButton} onClick={handleDownload}>
             <DownloadIcon
               className={styles.downloadIcon}
@@ -207,7 +277,6 @@ export default function ReusableTable({
                               alt="Edit"
                               aria-label="Edit"
                               className={styles.actionIcon}
-
                             />
                           </button>
                         )}
@@ -276,24 +345,44 @@ export default function ReusableTable({
           </button>
         </div>
       </div>
+
       <Popup
-            Top={0}
-            Right={0}
-            Left={0}
-            Bottom={0}
-            Width={500}
-            Height={900}
-            OnClose={toggleModal}
-            Blur={5}
-            Zindex={9999}
-            BorderRadiusTopLeft={15}
-            BorderRadiusTopRight={15}
-            BorderRadiusBottomRight={15}
-            BorderRadiusBottomLeft={15}
-            Content={content}
-            IsOpen={modalOpen}
-          />
-        
+        Top={0}
+        Right={0}
+        Left={0}
+        Bottom={0}
+        Width={500}
+        Height={900}
+        OnClose={toggleModal}
+        Blur={5}
+        Zindex={9999}
+        BorderRadiusTopLeft={15}
+        BorderRadiusTopRight={15}
+        BorderRadiusBottomRight={15}
+        BorderRadiusBottomLeft={15}
+        Content={content}
+        IsOpen={modalOpen}
+      />
+
+      {customButtonContent && (
+        <Popup
+          Top={0}
+          Right={0}
+          Left={0}
+          Bottom={0}
+          Width={500}
+          Height={900}
+          OnClose={toggleCustomModal}
+          Blur={5}
+          Zindex={9999}
+          BorderRadiusTopLeft={15}
+          BorderRadiusTopRight={15}
+          BorderRadiusBottomRight={15}
+          BorderRadiusBottomLeft={15}
+          Content={customButtonContent}
+          IsOpen={customModalOpen}
+        />
+      )}
     </div>
   );
 }

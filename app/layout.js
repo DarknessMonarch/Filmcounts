@@ -4,6 +4,7 @@ import "@/app/styles/global.css";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
+  weight: ["300" , "400" , "500" , "600" , "700" , "800"],
   variable: "--font-open-sans",
   display: "swap",
 });
@@ -95,10 +96,10 @@ export default function RootLayout({ children }) {
           richColors={true}
           toastOptions={{
             style: {
-              background: "#8aeccc",
-              color: "#ff3b3b",
+              background: "#58e7b7",
+              color: "#ffffff",
               borderRadius: "15px",
-              border: "1px solid #ff3b3b",
+              border: "1px solid #58e7b7",
             },
           }}
         />

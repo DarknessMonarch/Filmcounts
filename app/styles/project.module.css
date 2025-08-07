@@ -1,6 +1,6 @@
 @media screen {
   .projectContainer {
-    gap: 10px;
+    gap: 20px;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -41,7 +41,7 @@
   }
 
   .projectTopWrapperInner {
-    gap: 2px;
+    gap: 4px;
     display: flex;
     flex-direction: column;
   }
@@ -54,8 +54,8 @@
   }
 
   .projectTopWrapperInner h1 {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
     text-align: start;
     text-transform: capitalize;
   }

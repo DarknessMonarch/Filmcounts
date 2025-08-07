@@ -20,7 +20,7 @@
   }
 
   .formContainer {
-    gap: 30px;
+    gap: 20px;
     width: 100%;
     display: flex;
     text-align: center;
@@ -218,6 +218,7 @@
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 15px;
+    appearance: button;
     -webkit-appearance: button;
     border: double 2px var(--light-color);
     background-color: transparent;

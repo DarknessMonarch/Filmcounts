@@ -3,10 +3,9 @@
 import { toast } from "sonner";
 import Image from "next/image";
 import { useAuthStore } from "@/app/store/Auth";
-import Dropdown from "@/app/components/Dropdown";
 import Loader from "@/app/components/StateLoader";
 import styles from "@/app/styles/auth.module.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import authImage from "@/public/assets/authImage.png";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -18,7 +17,6 @@ import {
   FaRegUser as UserNameIcon,
   FaGoogle as GoogleIcon,
 } from "react-icons/fa6";
-import { MdManageAccounts as Accounttype } from "react-icons/md";
 
 import {
   MdOutlineVpnKey as PasswordIcon,
@@ -30,7 +28,6 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [terms, setTerms] = useState(false);
-  const [usernameError, setUsernameError] = useState("");
   const searchParams = useSearchParams();
   const { register } = useAuthStore();
   const router = useRouter();
@@ -51,12 +48,6 @@ export default function SignUp() {
     }
   }, [searchParams]);
 
-  const accountTypes = [
-    { name: "Individual", icon: <Accounttype className={styles.authIcon} /> },
-    { name: "Organization", icon: <Accounttype className={styles.authIcon} /> },
-    { name: "Admin", icon: <Accounttype className={styles.authIcon} /> },
-  ];
-
   const togglePasswordVisibility = (field) => {
     if (field === "password") {
       setShowPassword(!showPassword);
@@ -67,37 +58,53 @@ export default function SignUp() {
 
   const validateUsername = (username) => {
     if (username.includes("@")) {
-      setUsernameError("Username cannot be an email address");
+      toast.error("Username cannot be an email address");
       return false;
     }
-
-    if (username.length > 6) {
-      setUsernameError("Username cannot exceed 6 characters");
-      return false;
-    }
-
-    setUsernameError("");
     return true;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
+    // Validate username on change
     if (name === "username") {
-      const truncatedValue = value.slice(0, 6);
-      setFormData((prev) => ({ ...prev, [name]: truncatedValue }));
-      validateUsername(truncatedValue);
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      validateUsername(value);
     }
-  };
-
-  const handleAccountTypeSelect = (accountType) => {
-    setFormData((prev) => ({ ...prev, accountType: accountType.name }));
   };
 
   const handleGoogleSignUp = () => {
     toast.info("Google sign-up functionality will be implemented");
+  };
+
+  const handleRouting = () => {
+    const { getUserOrganizations, isUserAdmin } = useAuthStore.getState();
+    const organizations = getUserOrganizations();
+    
+    // Check if user has admin roles
+    if (isUserAdmin()) {
+      router.push("/page/admin/overview");
+      return;
+    }
+    
+    // Check if user has organizations
+    if (organizations && organizations.length > 0) {
+      // If multiple organizations, show selection page
+      if (organizations.length > 1) {
+        router.push("/authentication/account");
+        return;
+      }
+      
+      // Single organization - redirect directly
+      const org = organizations[0].organization;
+      const orgSlug = org.name?.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/page/organization/${orgSlug}/dashboard`);
+      return;
+    }
+    
+    // Individual user with no organizations
+    router.push("/page/user/dashboard");
   };
 
   const handleSubmit = async (e) => {
@@ -109,7 +116,6 @@ export default function SignUp() {
     }
 
     if (!validateUsername(formData.username)) {
-      toast.error(usernameError);
       return;
     }
 
@@ -133,6 +139,7 @@ export default function SignUp() {
       toast.error("Please accept the terms and conditions");
       return;
     }
+    
     setIsLoading(true);
 
     try {
@@ -149,34 +156,16 @@ export default function SignUp() {
 
       const result = await register(userData);
 
-      // if (result.success) {
-      //   toast.success(result.message);
-      //   router.push("verification", { scroll: false });
-      // } else {
-      //   toast.error(result.message);
-      // }
-
-      switch (accountTypes) {
-        case "Individual":
-          router.push("/page/user/dashboard", { scroll: false });
-          toast.success("Individual account created successfull");
-          break;
-        case "Organization":
-          router.push("/page/organization/dashboard", { scroll: false });
-          toast.success("Organization account created successfull");
-          break;
-        case "Administrator":
-          router.push("/page/admin/overview", { scroll: false });
-          toast.success("Administrator account created successfull");
-          break;
-        default:
-          router.push("/page/user/dashboard", { scroll: false });
-          toast.success("Account created successfully");
-          break;
+      if (result.success) {
+        toast.success("Account created successfully");
+        handleRouting();
+      } else {
+        toast.error(result.data?.message || "Registration failed");
       }
 
     } catch (error) {
-      toast.error(error.message);
+      console.error("Registration error:", error);
+      toast.error("An error occurred during registration");
     } finally {
       setIsLoading(false);
     }
@@ -213,13 +202,9 @@ export default function SignUp() {
               value={formData.username}
               onChange={handleInputChange}
               placeholder="Username"
-              maxLength={6}
               required
             />
           </div>
-          {usernameError && (
-            <div className={styles.errorMessage}>{usernameError}</div>
-          )}
 
           <div className={styles.authInput}>
             <EmailIcon alt="email icon" className={styles.authIcon} />
@@ -289,16 +274,6 @@ export default function SignUp() {
                 />
               )}
             </button>
-          </div>
-
-          <div className={styles.authInput}>
-            <Dropdown
-              options={accountTypes}
-              Icon={<Accounttype className={styles.authIcon} />}
-              dropPlaceHolder="Individual"
-              onSelect={handleAccountTypeSelect}
-              defaultValue="Individual"
-            />
           </div>
 
           <div className={styles.termsContainer}>

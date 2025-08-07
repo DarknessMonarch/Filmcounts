@@ -1,0 +1,129 @@
+@media screen {
+  .dropdownContainer {
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    flex-direction: column;
+  }
+
+  .dropdownContainer span {
+    font-size: 1rem;
+  }
+
+  .dropdownInput {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    padding: 15px;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-light-color);
+  }
+
+  .dropdownArea {
+    gap: 10px;
+    top: 80px;
+    width: 100%;
+    z-index: 200;
+    padding: 10px;
+    display: flex;
+    overflow: hidden;
+    max-height: 300px;
+    position: absolute;
+    border-radius: 15px;
+    flex-direction: column;
+    color: var(--light-color);
+    box-shadow: var(--shadow-box);
+    background-color: var(--background-color);
+  }
+
+  .dropdownInputSection {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdownSearchInput {
+    flex: 1 1 auto;
+    width: 100%;
+    border: none;
+    height: 40px;
+    outline: none;
+    padding: 15px;
+    border-radius: 10px;
+    color: var(--light-color);
+    border: 1px solid var(--background-dark-color);
+  }
+
+  .dropdownSearchInput:-webkit-autofill,
+  .dropdownSearchInput:-webkit-autofill:hover,
+  .dropdownSearchInput:-webkit-autofill:focus,
+  .dropdownSearchInput:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--light-color) !important;
+  }
+
+  .dropdownSearchInput::placeholder {
+    font-size: 0.8rem;
+    font-weight: 200;
+    text-transform: capitalize;
+    color: var(--light-color);
+  }
+
+  .optionButton {
+    gap: 10px;
+    width: 80px;
+    height: 40px;
+    display: flex;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .optionButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .optionsList {
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: start;
+    max-height: inherit;
+    flex-direction: column;
+    border: 2px solid saddlebrown;
+  }
+
+  .optionsList span {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    border-radius: 15px;
+    font-weight: 300;
+  }
+
+  .optionsList span:hover {
+    color: var(--background-color);
+    background-color: var(--tertiary-hover-color);
+  }
+
+  .noResults {
+    padding: 10px;
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+}

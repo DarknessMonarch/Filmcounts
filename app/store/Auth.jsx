@@ -1,620 +1,168 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 const SERVER_API = process.env.NEXT_PUBLIC_SERVER_API;
-const TOKEN_REFRESH_INTERVAL = 50 * 60 * 1000; // 50 minutes
 
 export const useAuthStore = create(
   persist(
     (set, get) => ({
+      user: null,
       isAuth: false,
-      userId: "",
-      username: "",
-      email: "",
-      country: "",
-      profileImage: "",
-      referralCode: "",
-      isVip: false,
-      vipPlan: "",
-      duration: "",
-      expires: "",
-      isAdmin: false,
-      payment: 0,
-      accessToken: "",
-      refreshToken: "",
-      lastLogin: null,
-      tokenExpirationTime: null,
-      refreshTimeoutId: null,
-      emailVerified: false,
-      referredBy: "",
-      referrals: [],
-      activeUsersCount: 0,
-      vipUsersCount: 0,
-      adminUsersCount: 0,
-      isAuthorized: false,
-
-      setUser: (userData) => {
-        const tokenExpirationTime = Date.now() + TOKEN_REFRESH_INTERVAL;
-        set({
-          isAuth: true,
-          userId: userData.id,
-          username: userData.username,
-          email: userData.email,
-          payment: userData.payment || 0,
-          duration: userData.duration || 0,
-          expires: userData.expires || null,
-          country: userData.country || "",
-          profileImage: userData.profileImage || "",
-          referralCode: userData.referralCode || "",
-          isVip: userData.isVip || false,
-          vipPlan: userData.vipPlan || "",
-          isAdmin: userData.isAdmin || false,
-          emailVerified: userData.emailVerified || false,
-          referredBy: userData.referredBy || "",
-          referrals: userData.referrals || [],
-          isAuthorized: userData.isAuthorized || false,
-          accessToken: userData.tokens.accessToken,
-          refreshToken: userData.tokens.refreshToken,
-          lastLogin: userData.lastLogin || new Date().toISOString(),
-          tokenExpirationTime,
-        });
-        get().scheduleTokenRefresh();
+      tokens: {
+        accessToken: null,
+        refreshToken: null,
       },
 
-      updateUser: (userData) => {
-        set((state) => ({
-          ...state,
-          ...userData,
-        }));
-      },
-
-      clearUser: () => {
-        get().cancelTokenRefresh();
-        set({
-          isAuth: false,
-          userId: "",
-          username: "",
-          email: "",
-          country: "",
-          profileImage: "",
-          referralCode: "",
-          isVip: false,
-          vipPlan: "",
-          duration: "",
-          expires: "",
-          isAdmin: false,
-          payment: 0,
-          accessToken: "",
-          refreshToken: "",
-          lastLogin: null,
-          tokenExpirationTime: null,
-          emailVerified: false,
-          referredBy: "",
-          referrals: [],
-          isAuthorized: false,
-        });
-      },
-
-      sendVerificationEmail: async (email) => {
-        try {
-          const response = await fetch(`${SERVER_API}/auth/send-verification`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-          });
-
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
-        } catch (error) {
-          return { success: false, message: "Failed to send verification email" };
-        }
-      },
-
-      verifyEmail: async (email, verificationCode) => {
-        try {
-          const { accessToken } = get(); 
-          
-          const response = await fetch(`${SERVER_API}/auth/verify-email`, {
-            method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${accessToken}` 
-            },
-            body: JSON.stringify({ email, verificationCode }),
-          });
-      
-          const data = await response.json();
-          if (data.status === "success") {
-            set({ emailVerified: true });
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Email verification failed" };
-        }
-      },
+      setUser: (user) => set({ user, isAuth: true }),
+      setTokens: (tokens) => set({ tokens }),
 
       register: async (userData) => {
         try {
-          const response = await fetch(`${SERVER_API}/auth/register`, {
+          const res = await fetch(`${SERVER_API}/um/public/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData),
           });
-      
-          const data = await response.json();
-      
-          if (data.status === "success") {
-            const userWithTokens = {
-              ...data.data.user,
-              tokens: data.data.tokens,
-              profileImage: "",
-              isAdmin: false,
-              lastLogin: new Date().toISOString(),
-            };
-            
-            get().setUser(userWithTokens);
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Registration failed" };
-        }
-      },
+          const data = await res.json();
 
-      login: async (email, password) => {
-        try {
-          const response = await fetch(`${SERVER_API}/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-      
-          const data = await response.json();
-      
-          if (data.data?.user?.emailVerified === false) {
-            return { 
-              success: false, 
-              message: "Please verify your email to log in. Check your inbox.",
-              isVip: data.data?.user?.isVip || false,
-              isAdmin: data.data?.user?.isAdmin || false,
-            };
-          }
-      
-          if (data.status === "success" && data.data?.user && data.data?.tokens) {
-            const userWithTokens = {
-              ...data.data.user,
-              tokens: data.data.tokens,
-              profileImage: data.data.user.profileImage || "",
-              lastLogin: data.data.user.lastLogin || new Date().toISOString(),
-            };
-      
-            get().setUser(userWithTokens);
-            return { 
-              success: true, 
-              message: data.message,
-              isVip: data.data.user.isVip, 
-              isAdmin: data.data.user.isAdmin 
-            };
-          }
-      
-          return { 
-            success: false, 
-            message: data.message || "Login failed", 
-            isVip: data.data?.user?.isVip || false, 
-            isAdmin: data.data?.user?.isAdmin || false 
-          };
-        } catch (error) {
-          return { 
-            success: false, 
-            message: "Login failed", 
-            isVip: false, 
-            isAdmin: false 
-          };
-        }
-      },
-      
-      logout: async () => {
-        try {
-          const { accessToken } = get();
-          await fetch(`${SERVER_API}/auth/logout`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          get().clearUser();
-          return { success: true, message: "Logout successful" };
-        } catch (error) {
-          return { success: false, message: "Logout failed" };
-        }
-      },
-
-      refreshAccessToken: async () => {
-        try {
-          const { refreshToken } = get();
-          if (!refreshToken) {
-            get().clearUser();
-            return false;
-          }
-
-          const response = await fetch(`${SERVER_API}/auth/refresh-token`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refreshToken }),
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            set({
-              accessToken: data.data.accessToken,
-              refreshToken: data.data.refreshToken,
-              tokenExpirationTime: Date.now() + TOKEN_REFRESH_INTERVAL,
+          if (res.ok && data.data) {
+            // Store user data from the response
+            get().setUser(data.data);
+            // Store tokens with correct property names from API
+            get().setTokens({
+              accessToken: data.data.access_token,
+              refreshToken: data.data.refresh_token,
             });
-            get().scheduleTokenRefresh();
-            return true;
           }
-          get().clearUser();
-          return false;
+
+          return { success: res.ok, data };
         } catch (error) {
-          get().clearUser();
-          return false;
+          console.error("Registration error:", error);
+          return { success: false, error: "Registration failed" };
         }
       },
 
-      updateProfile: async (updateData) => {
+      login: async (credentials) => {
         try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/update-profile`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(updateData),
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            get().updateUser(data.data.user);
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Profile update failed" };
-        }
-      },
-
-      updatePassword: async (passwordData) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/update-password`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(passwordData),
-          });
-
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
-        } catch (error) {
-          return { success: false, message: "Password update failed" };
-        }
-      },
-
-      updateProfileImage: async (imageData) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/update-profile-image`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ image: imageData }),
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            set({ profileImage: data.data.profileImage });
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Profile image update failed" };
-        }
-      },
-
-      requestPasswordReset: async (email) => {
-        try {
-          const response = await fetch(`${SERVER_API}/auth/reset-password-request`, {
+          const res = await fetch(`${SERVER_API}/um/public/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify(credentials),
           });
+          const data = await res.json();
 
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
+          if (res.ok && data.data) {
+            // Store user data from the response
+            get().setUser(data.data);
+            // Store tokens with correct property names from API
+            get().setTokens({
+              accessToken: data.data.access_token,
+              refreshToken: data.data.refresh_token,
+            });
+          }
+
+          return { success: res.ok, data };
         } catch (error) {
-          return { success: false, message: "Password reset request failed" };
+          console.error("Login error:", error);
+          return { success: false, error: "Login failed" };
         }
       },
 
-      resetPassword: async (token, newPassword) => {
+      verifyEmail: async (token, code) => {
         try {
-          const response = await fetch(`${SERVER_API}/auth/reset-password`, {
+          const res = await fetch(`${SERVER_API}/um/public/verify/email/${token}/${code}`, {
+            method: "POST",
+          });
+          const data = await res.json();
+          return { success: res.ok, data };
+        } catch (error) {
+          console.error("Email verification error:", error);
+          return { success: false, error: "Email verification failed" };
+        }
+      },
+
+      verifyForgotLink: async (token, code) => {
+        try {
+          const res = await fetch(`${SERVER_API}/um/public/verify/forgot/${token}/${code}`, {
+            method: "POST",
+          });
+          const data = await res.json();
+          return { success: res.ok, data };
+        } catch (error) {
+          console.error("Forgot verification error:", error);
+          return { success: false, error: "Forgot verification failed" };
+        }
+      },
+
+      sendForgotPassword: async (emailData) => {
+        try {
+          const res = await fetch(`${SERVER_API}/um/public/forgot-password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token, newPassword }),
-          });
-
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
-        } catch (error) {
-          return { success: false, message: "Password reset failed" };
-        }
-      },
-
-      toggleVipStatus: async (userData) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/toggle-vip`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(userData),
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            const updatedUsers = await get().getAllUsers();
-            // Update VIP users count 
-            const vipUsersResponse = await get().getUsersByRole('vip');
-            if (vipUsersResponse.success) {
-              set({ vipUsersCount: vipUsersResponse.data.count });
-            }
-            return { ...data, users: updatedUsers.data.users };
-          }
-          return data;
-        } catch (error) {
-          return { success: false, message: "VIP status update failed" };
-        }
-      },
-
-      submitContactForm: async (email, username, message) => {
-        try {
-          const response = await fetch(`${SERVER_API}/auth/contact`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, username, message }),
-          });
-      
-          const data = await response.json();
-          if (data.status === "success") {
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Failed to submit contact form" };
-        }
-      },
-
-      toggleAdmin: async (userId, makeAdmin) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/toggle`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ userId, makeAdmin }),
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            const updatedUsers = await get().getAllUsers();
-            if (updatedUsers.success) {
-              return { ...data, users: updatedUsers.data.users };
-            }
-          }
-          return { success: data.status === "success", message: data.message };
-        } catch (error) {
-          return { success: false, message: "Failed to toggle admin status" };
-        }
-      },
-
-      bulkDeleteAccounts: async (userIds) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/bulk-delete`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ userIds }),
-          });
-
-          const data = await response.json();
-          return {
-            success: data.status === "success",
-            message: data.message,
-            data: data.data,
-          };
-        } catch (error) {
-          return {
-            success: false,
-            message: "Failed to perform bulk deletion",
-          };
-        }
-      },
-
-      deleteUserAccount: async (userId) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/delete-account/${userId}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
-        } catch (error) {
-          return { success: false, message: "Failed to delete user account" };
-        }
-      },
-
-      deleteAccount: async () => {
-        try {
-          const { accessToken } = get();
-
-          if (!accessToken) {
-            return { success: false, message: "Not authenticated" };
-          }
-          
-          const response = await fetch(`${SERVER_API}/auth/delete-account`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            get().clearUser();
-            return { success: true, message: data.message };
-          }
-          return { success: false, message: data.message };
-        } catch (error) {
-          return { success: false, message: "Failed to delete account" };
-        }
-      },
-
-      
-
-
-      getAllUsers: async () => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/users`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-
-          const data = await response.json();
-          if (data.status === "success") {
-            set({ activeUsersCount: data.data.count });
-          }
-          return { success: data.status === "success", data: data.data };
-        } catch (error) {
-          return { success: false, message: "Failed to fetch users" };
-        }
-      },
-
-      getUsersByRole: async (role, action, userId) => {
-        try {
-          const { accessToken } = get();
-          let url = `${SERVER_API}/auth/admin/users/by-role?role=${role}`;
-          let options = {
-            method: "GET",
-            headers: { Authorization: `Bearer ${accessToken}` },
-          };
-
-          if (action === "delete" && userId) {
-            options = {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify({ userId }),
-            };
-          }
-
-          const response = await fetch(url, options);
-          const data = await response.json();
-          if (data.status === "success") {
-            if (role === 'vip') {
-              set({ vipUsersCount: data.data.count });
-            } else if (role === 'admin') {
-              set({ adminUsersCount: data.data.count });
-            }
-          }
-          return { success: data.status === "success", data: data.data };
-        } catch (error) {
-          return { success: false, message: "Failed to fetch/update users by role" };
-        }
-      },
-
-      setActiveUsersCount: (count) => set({ activeUsersCount: count }),
-      setVipUsersCount: (count) => set({ vipUsersCount: count }),
-      setAdminUsersCount: (count) => set({ adminUsersCount: count }),
-
-
-      getRevenueAnalytics: async () => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/analytics/revenue`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-
-          const data = await response.json();
-          return { success: data.status === "success", data: data.data };
-        } catch (error) {
-          return { success: false, message: "Failed to fetch revenue analytics" };
-        }
-      },
-
-      sendBulkEmails: async (emailData) => {
-        try {
-          const { accessToken } = get();
-          const response = await fetch(`${SERVER_API}/auth/admin/email/bulk`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
             body: JSON.stringify(emailData),
           });
-
-          const data = await response.json();
-          return { success: data.status === "success", message: data.message };
+          const data = await res.json();
+          return { success: res.ok, data };
         } catch (error) {
-          return { success: false, message: "Failed to send bulk emails" };
+          console.error("Forgot password error:", error);
+          return { success: false, error: "Forgot password failed" };
         }
       },
 
-      scheduleTokenRefresh: () => {
-        const { tokenExpirationTime, refreshTimeoutId } = get();
-        if (refreshTimeoutId) {
-          clearTimeout(refreshTimeoutId);
+      resetPassword: async (resetData) => {
+        try {
+          const res = await fetch(`${SERVER_API}/um/public/recovery/reset`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(resetData),
+          });
+          const data = await res.json();
+          return { success: res.ok, data };
+        } catch (error) {
+          console.error("Reset password error:", error);
+          return { success: false, error: "Reset failed" };
         }
-
-        const timeUntilRefresh = Math.max(0, tokenExpirationTime - Date.now() - 60000);
-        const newTimeoutId = setTimeout(() => {
-          get().refreshAccessToken();
-        }, timeUntilRefresh);
-
-        set({ refreshTimeoutId: newTimeoutId });
       },
 
-      cancelTokenRefresh: () => {
-        const { refreshTimeoutId } = get();
-        if (refreshTimeoutId) {
-          clearTimeout(refreshTimeoutId);
-          set({ refreshTimeoutId: null });
+      logout: async () => {
+        const { accessToken } = get().tokens || {};
+        try {
+          const res = await fetch(`${SERVER_API}/um/logout`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            credentials: "include",
+          });
+          if (res.ok) {
+            set({ user: null, isAuth: false, tokens: { accessToken: null, refreshToken: null } });
+          }
+          return { success: res.ok };
+        } catch (error) {
+          console.error("Logout error:", error);
+          return { success: false, error: "Logout failed" };
         }
+      },
+
+      // Helper method to get user organizations
+      getUserOrganizations: () => {
+        const { user } = get();
+        return user?.organizations || [];
+      },
+
+      // Helper method to check if user has admin role in any organization
+      isUserAdmin: () => {
+        const organizations = get().getUserOrganizations();
+        return organizations.some(org => 
+          org.roles && org.roles.some(role => 
+            role === "ADMIN" || role === "ADMINISTRATOR"
+          )
+        );
       },
     }),
     {
-      name: "authenticate-store",
-      getStorage: () => localStorage,
+      name: "auth-store",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

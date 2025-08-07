@@ -6,15 +6,21 @@
     z-index: 1000;
     padding: 10px;
     position: sticky;
-    border-radius:30px;
+    border-radius: 15px;
     align-items: center;
-    backdrop-filter: blur(4px); 
+    backdrop-filter: blur(4px);
     height: var(--navbar-height);
     box-shadow: var(--shadow-box);
     justify-content: space-between;
-    -webkit-backdrop-filter: blur(4px); 
-    background: var(--background-color); 
- 
+    -webkit-backdrop-filter: blur(4px);
+    background: var(--background-color);
+  }
+
+  .navbarSettings {
+    top: 10px;
+    right: 10px;
+    z-index: 999;
+    position: absolute;
   }
 
   .navLeft {
@@ -40,7 +46,6 @@
   .menuIcon {
     font-size: 40px;
     color: var(--primary-light-color);
-
   }
 
   .menuIcon:hover {
@@ -58,6 +63,7 @@
     height: 50px;
     display: flex;
     min-width: 50px;
+    width: 50px;
     cursor: pointer;
     align-items: center;
     border-radius: 360%;
@@ -65,7 +71,7 @@
     backdrop-filter: blur(4px);
     box-shadow: var(--nav-shadow-box);
     -webkit-backdrop-filter: blur(4px);
-    background: rgba(253, 253, 253, 0.7);
+    background: var(--background-color);
   }
 
   .notificationButton:hover .notificationIcon {
@@ -75,7 +81,6 @@
   .notificationIcon {
     font-size: 24px;
     color: var(--primary-light-color);
-
   }
 
   .userProfile {
@@ -91,7 +96,7 @@
     backdrop-filter: blur(4px);
     box-shadow: var(--nav-shadow-box);
     -webkit-backdrop-filter: blur(4px);
-    background: rgba(253, 253, 253, 0.7);
+    background: var(--background-color);
   }
 
   .userProfileInfo {
@@ -113,6 +118,20 @@
     color: var(--primary-light-color);
   }
 
+  .logoutButton {
+    display: flex;
+    cursor: pointer;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-color);
+    background-color: var(--tertiary-color);
+  }
+
+  .logoutButton:hover {
+    background-color: var(--tertiary-hover-color);
+  }
+
   .profileImg {
     width: 50px;
     height: 50px;
@@ -128,11 +147,34 @@
   .dropdownIcon {
     font-size: 28px;
     color: var(--primary-light-color);
-
   }
 
   .userProfile:hover .dropdownIcon {
     color: var(--tertiary-color);
+  }
+
+  .loginButton {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    cursor: pointer;
+    object-fit: cover;
+    border-radius: 50%;
+    align-items: center;
+    object-position: center;
+    justify-content: center;
+    color: var(--primary-light-color);
+    box-shadow: var(--nav-shadow-box);
+    background-color: var(--background-color);
+  }
+
+  .loginButton:hover {
+    color: var(--tertiary-color);
+  }
+
+  .authIcon {
+    font-size: 24px;
+    flex-shrink: 0;
   }
 }
 
@@ -141,7 +183,6 @@
   .navContainer {
     box-shadow: none;
     height: var(--navbar-desktop-height);
-
   }
 
   .userProfile {
