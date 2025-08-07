@@ -93,7 +93,7 @@ export default function Verify() {
         // Route user to appropriate dashboard after successful verification
         handleRouting();
       } else {
-        toast.error(result.data?.message || "Verification failed");
+        toast.error(result.data?.errors || "Verification failed");
       }
     } catch (error) {
       console.error("Verification error:", error);

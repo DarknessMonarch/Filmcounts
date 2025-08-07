@@ -160,7 +160,7 @@ export default function SignUp() {
         toast.success("Account created successfully");
         handleRouting();
       } else {
-        toast.error(result.data?.message || "Registration failed");
+        toast.error(result.data?.errors || "Registration failed");
       }
 
     } catch (error) {

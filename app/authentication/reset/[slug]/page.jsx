@@ -79,7 +79,7 @@ export default function Reset({ params }) {
         toast.success(result.data?.message || "Password reset successfully");
         router.push("/login", { scroll: false });
       } else {
-        toast.error(result.data?.message || result.error || "Failed to reset password");
+        toast.error(result.data?.errors || result.error || "Failed to reset password");
       }
     } catch (error) {
       console.error("Reset password error:", error);

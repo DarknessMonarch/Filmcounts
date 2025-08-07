@@ -91,7 +91,7 @@ export default function Login() {
         toast.success("Login successful");
         handleRouting();
       } else {
-        toast.error(result.data?.message || "Login failed");
+        toast.error(result.data?.errors || "Login failed");
       }
     } catch (error) {
       console.error("Login error:", error);

@@ -43,7 +43,7 @@ export default function ResetCode() {
           router.push("/authentication/login");
         }, 2000);
       } else {
-        toast.error(result.data?.message || "Failed to send password reset link");
+        toast.error(result.data?.errors || "Failed to send password reset link");
       }
     } catch (error) {
       console.error("Password reset error:", error);
