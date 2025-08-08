@@ -5,17 +5,13 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/app/store/Auth";
 import { useTrailStore } from "@/app/store/Trail";
+import { useConfigStore } from "@/app/store/Configs";
 import FormDropdown from "@/app/components/FormDropdown";
 import styles from "@/app/styles/configuration.module.css";
 import { 
   MdVisibility, 
   MdVisibilityOff, 
-  MdEmail, 
-  MdSchedule, 
-  MdNotifications, 
-  MdSecurity, 
   MdStorage, 
-  MdPeople,
   MdSearch,
   MdFilterList,
   MdRefresh,
@@ -24,44 +20,23 @@ import {
   MdInfo
 } from "react-icons/md";
 
-export default function UserManagement() {
+export default function Configuration() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, tokens } = useAuthStore();
-  const { trails, loading, searchTrail } = useTrailStore();
+  const { trails, loading: trailLoading, searchTrail } = useTrailStore();
+  const { configs, loading: configLoading, addConfig, updateConfig, getConfigs, getConfigByKey } = useConfigStore();
 
   const currentNavSection = searchParams.get('navSection') || 'API Keys';
 
-  // Configuration states (keeping existing ones)
+  // Configuration states - now using actual config keys
   const [apiConfig, setApiConfig] = useState({
     provider: 'Minio',
     apiKey: '',
     apiSecret: ''
   });
 
-  const [emailConfig, setEmailConfig] = useState({
-    smtpServer: '',
-    smtpPort: '587',
-    emailAddress: '',
-    password: '',
-    encryptionType: 'TLS',
-    senderName: 'Organization Support',
-    replyToEmail: '',
-    maxEmailsPerHour: '100'
-  });
-
-  const [scheduleConfig, setScheduleConfig] = useState({
-    backupFrequency: { label: 'Daily', value: 'daily' },
-    backupTime: '02:00',
-    cleanupFrequency: { label: 'Weekly', value: 'weekly' },
-    cleanupDay: { label: 'Sunday', value: 'sunday' },
-    reportFrequency: { label: 'Monthly', value: 'monthly' },
-    reportRecipients: '',
-    maintenanceWindow: '03:00-05:00',
-    autoUpdates: true
-  });
-
-  // Trail search states
+  // Trail search states - updated to work with new API
   const [searchFilters, setSearchFilters] = useState({
     action: '',
     resource: '',
@@ -69,9 +44,8 @@ export default function UserManagement() {
     startDate: '',
     endDate: '',
     ipAddress: '',
-          limit: '50',
-    sortBy: 'timestamp',
-    sortOrder: 'desc'
+    responseCode: '',
+    limit: '50'
   });
 
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
@@ -79,37 +53,10 @@ export default function UserManagement() {
   // Visibility states
   const [showApiKey, setShowApiKey] = useState(false);
   const [showApiSecret, setShowApiSecret] = useState(false);
-  const [showEmailPassword, setShowEmailPassword] = useState(false);
 
-  // Dropdown options (keeping existing ones)
+  // Dropdown options - only Minio
   const providerOptions = [
-    { label: 'Minio', value: 'minio' },
-    { label: 'AWS S3', value: 'aws' },
-    { label: 'Google Cloud Storage', value: 'gcs' },
-    { label: 'Azure Blob Storage', value: 'azure' }
-  ];
-
-  const encryptionOptions = [
-    { label: 'TLS', value: 'tls' },
-    { label: 'SSL', value: 'ssl' },
-    { label: 'None', value: 'none' }
-  ];
-
-  const frequencyOptions = [
-    { label: 'Hourly', value: 'hourly' },
-    { label: 'Daily', value: 'daily' },
-    { label: 'Weekly', value: 'weekly' },
-    { label: 'Monthly', value: 'monthly' }
-  ];
-
-  const dayOptions = [
-    { label: 'Monday', value: 'monday' },
-    { label: 'Tuesday', value: 'tuesday' },
-    { label: 'Wednesday', value: 'wednesday' },
-    { label: 'Thursday', value: 'thursday' },
-    { label: 'Friday', value: 'friday' },
-    { label: 'Saturday', value: 'saturday' },
-    { label: 'Sunday', value: 'sunday' }
+    { label: 'Minio', value: 'minio' }
   ];
 
   // Trail-specific options
@@ -134,11 +81,6 @@ export default function UserManagement() {
     { label: 'Email', value: 'email' }
   ];
 
-  const sortOptions = [
-    { label: 'Newest First', value: 'desc' },
-    { label: 'Oldest First', value: 'asc' }
-  ];
-
   const limitOptions = [
     { label: '25 results', value: 25 },
     { label: '50 results', value: 50 },
@@ -156,17 +98,52 @@ export default function UserManagement() {
     }
   }, [searchParams, router]);
 
-  // Load trails when component mounts
+  // Load configs when component mounts
+  useEffect(() => {
+    if (tokens?.accessToken) {
+      loadConfigs();
+    }
+  }, [tokens?.accessToken]);
+
+  // Load configs from store and populate form states
+  useEffect(() => {
+    if (configs.length > 0) {
+      populateConfigForms();
+    }
+  }, [configs]);
+
+  // Load trails when audit trail section is active
   useEffect(() => {
     if (tokens?.accessToken && currentNavSection === 'Audit Trail') {
       handleSearchTrails();
     }
   }, [tokens?.accessToken, currentNavSection]);
 
+  const loadConfigs = async () => {
+    const result = await getConfigs();
+    if (!result.success) {
+      toast.error(result.error || "Failed to load configurations");
+    }
+  };
+
+  const populateConfigForms = () => {
+    // API Config
+    const minioKey = getConfigByKey('MINIO_ACCESS_KEY');
+    const minioSecret = getConfigByKey('MINIO_SECRET_KEY');
+    const storageProvider = getConfigByKey('STORAGE_PROVIDER');
+    
+    if (minioKey || minioSecret || storageProvider) {
+      setApiConfig(prev => ({
+        ...prev,
+        apiKey: minioKey?.value || '',
+        apiSecret: minioSecret?.value || '',
+        provider: storageProvider?.value || 'Minio'
+      }));
+    }
+  };
+
   const navigationItems = [
     { key: 'API Keys', label: 'API Keys', active: true },
-    { key: 'Support email', label: 'Support email', active: false },
-    { key: 'Schedule task', label: 'Schedule task', active: false },
     { key: 'Audit Trail', label: 'Audit Trail', active: false }
   ];
 
@@ -181,23 +158,9 @@ export default function UserManagement() {
     return currentNavSection === itemKey;
   };
 
-  // Existing handlers (keeping them as is)
+  // Configuration handlers
   const handleInputChange = (field, value) => {
     setApiConfig(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleEmailConfigChange = (field, value) => {
-    setEmailConfig(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleScheduleConfigChange = (field, value) => {
-    setScheduleConfig(prev => ({
       ...prev,
       [field]: value
     }));
@@ -223,44 +186,48 @@ export default function UserManagement() {
     toast.success('API Key generated successfully');
   };
 
-  const handleSave = (configType) => {
-    let isValid = true;
+  const saveConfigToStore = async (key, value, system = true) => {
+    const existingConfig = getConfigByKey(key);
     
-    switch(configType) {
-      case 'api':
-        if (!apiConfig.apiKey || !apiConfig.apiSecret) {
-          toast.error('Please fill in all API configuration fields');
-          isValid = false;
-        }
-        break;
-      case 'email':
-        if (!emailConfig.smtpServer || !emailConfig.emailAddress || !emailConfig.password) {
-          toast.error('Please fill in all required email fields');
-          isValid = false;
-        }
-        break;
-      case 'schedule':
-        if (!scheduleConfig.reportRecipients) {
-          toast.error('Please provide report recipients email');
-          isValid = false;
-        }
-        break;
-    }
-    
-    if (isValid) {
-      toast.success(`${configType.charAt(0).toUpperCase() + configType.slice(1)} configuration saved successfully`);
+    if (existingConfig) {
+      return await updateConfig({ key, value });
+    } else {
+      return await addConfig({ key, value, system });
     }
   };
 
-  const testEmailConnection = () => {
-    if (!emailConfig.smtpServer || !emailConfig.emailAddress) {
-      toast.error('Please fill in SMTP server and email address first');
-      return;
+  const handleSave = async (configType) => {
+    let isValid = true;
+    let configsToSave = [];
+    
+    if (configType === 'api') {
+      if (!apiConfig.apiKey || !apiConfig.apiSecret) {
+        toast.error('Please fill in all API configuration fields');
+        isValid = false;
+      } else {
+        configsToSave = [
+          { key: 'MINIO_ACCESS_KEY', value: apiConfig.apiKey },
+          { key: 'MINIO_SECRET_KEY', value: apiConfig.apiSecret },
+          { key: 'STORAGE_PROVIDER', value: apiConfig.provider }
+        ];
+      }
     }
-    toast.info('Testing email connection...');
-    setTimeout(() => {
-      toast.success('Email connection test successful');
-    }, 2000);
+    
+    if (isValid && configsToSave.length > 0) {
+      try {
+        const promises = configsToSave.map(config => saveConfigToStore(config.key, config.value));
+        const results = await Promise.all(promises);
+        
+        const failedSaves = results.filter(result => !result.success);
+        if (failedSaves.length > 0) {
+          toast.error('Some configurations failed to save');
+        } else {
+          toast.success(`${configType.charAt(0).toUpperCase() + configType.slice(1)} configuration saved successfully`);
+        }
+      } catch (error) {
+        toast.error('Failed to save configuration');
+      }
+    }
   };
 
   // Trail-specific handlers
@@ -277,13 +244,21 @@ export default function UserManagement() {
       return;
     }
 
-    // Clean up filters - remove empty values
+    // Clean up filters - remove empty values and prepare for API
     const cleanFilters = Object.entries(searchFilters).reduce((acc, [key, value]) => {
-      if (value !== '' && value !== null && value !== undefined) {
-        acc[key] = value;
+      if (value !== '' && value !== null && value !== undefined && key !== 'limit') {
+        // Convert field names to match API expectations
+        if (key === 'responseCode' && value) {
+          acc[key] = parseInt(value);
+        } else if (value !== '') {
+          acc[key] = value;
+        }
       }
       return acc;
     }, {});
+
+    // Add limit separately as it's used in the request body structure
+    cleanFilters.limit = searchFilters.limit;
 
     const result = await searchTrail(cleanFilters);
     if (!result.success) {
@@ -299,9 +274,8 @@ export default function UserManagement() {
       startDate: '',
       endDate: '',
       ipAddress: '',
-      limit: '50',
-      sortBy: 'timestamp',
-      sortOrder: 'desc'
+      responseCode: '',
+      limit: '50'
     });
   };
 
@@ -357,124 +331,111 @@ export default function UserManagement() {
             <h2>Audit Trail</h2>
             
             <div className={styles.configSection}>
-              <div className={styles.searchSection}>
-                <div className={styles.searchHeader}>
-                  <h3>Search Filters</h3>
-                  <button
-                    onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                    className={styles.toggleFiltersBtn}
-                  >
-                    <MdFilterList />
-                    {showAdvancedFilters ? 'Hide' : 'Show'} Advanced Filters
-                  </button>
-                </div>
-
-                <div className={styles.basicFilters}>
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label>Action</label>
-                      <FormDropdown
-                        options={actionOptions}
-                        value={actionOptions.find(opt => opt.value === searchFilters.action)}
-                        onSelect={(option) => handleSearchFilterChange('action', option.value)}
-                        dropPlaceHolder="Select Action"
-                        Icon={<MdInfo />}
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Resource</label>
-                      <FormDropdown
-                        options={resourceOptions}
-                        value={resourceOptions.find(opt => opt.value === searchFilters.resource)}
-                        onSelect={(option) => handleSearchFilterChange('resource', option.value)}
-                        dropPlaceHolder="Select Resource"
-                        Icon={<MdStorage />}
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Sort Order</label>
-                      <FormDropdown
-                        options={sortOptions}
-                        value={sortOptions.find(opt => opt.value === searchFilters.sortOrder)}
-                        onSelect={(option) => handleSearchFilterChange('sortOrder', option.value)}
-                        dropPlaceHolder="Sort Order"
-                        Icon={<MdSchedule />}
-                      />
-                    </div>
+              <div className={styles.sectionGroup}>
+                <h3>Search Filters</h3>
+                
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Action</label>
+                    <FormDropdown
+                      options={actionOptions}
+                      value={actionOptions.find(opt => opt.value === searchFilters.action)}
+                      onSelect={(option) => handleSearchFilterChange('action', option.value)}
+                      dropPlaceHolder="Select Action"
+                      Icon={<MdInfo />}
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Resource</label>
+                    <FormDropdown
+                      options={resourceOptions}
+                      value={resourceOptions.find(opt => opt.value === searchFilters.resource)}
+                      onSelect={(option) => handleSearchFilterChange('resource', option.value)}
+                      dropPlaceHolder="Select Resource"
+                      Icon={<MdStorage />}
+                    />
                   </div>
                 </div>
 
-                {showAdvancedFilters && (
-                  <div className={styles.advancedFilters}>
-                    <div className={styles.formRow}>
-                      <div className={styles.formGroup}>
-                        <label>User ID</label>
-                        <input
-                          type="text"
-                          value={searchFilters.userId}
-                          onChange={(e) => handleSearchFilterChange('userId', e.target.value)}
-                          className={styles.textInput}
-                          placeholder="Enter User ID"
-                        />
-                      </div>
-                      <div className={styles.formGroup}>
-                        <label>IP Address</label>
-                        <input
-                          type="text"
-                          value={searchFilters.ipAddress}
-                          onChange={(e) => handleSearchFilterChange('ipAddress', e.target.value)}
-                          className={styles.textInput}
-                          placeholder="Enter IP Address"
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.formRow}>
-                      <div className={styles.formGroup}>
-                        <label>Start Date</label>
-                        <input
-                          type="datetime-local"
-                          value={searchFilters.startDate}
-                          onChange={(e) => handleSearchFilterChange('startDate', e.target.value)}
-                          className={styles.textInput}
-                        />
-                      </div>
-                      <div className={styles.formGroup}>
-                        <label>End Date</label>
-                        <input
-                          type="datetime-local"
-                          value={searchFilters.endDate}
-                          onChange={(e) => handleSearchFilterChange('endDate', e.target.value)}
-                          className={styles.textInput}
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.formRow}>
-                      <div className={styles.formGroup}>
-                        <label>Results Limit</label>
-                        <FormDropdown
-                          options={limitOptions}
-                          value={limitOptions.find(opt => opt.value === parseInt(searchFilters.limit))}
-                          onSelect={(option) => handleSearchFilterChange('limit', option.value.toString())}
-                          dropPlaceHolder="Results Limit"
-                          Icon={<MdFilterList />}
-                        />
-                      </div>
-                    </div>
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Results Limit</label>
+                    <FormDropdown
+                      options={limitOptions}
+                      value={limitOptions.find(opt => opt.value === parseInt(searchFilters.limit))}
+                      onSelect={(option) => handleSearchFilterChange('limit', option.value.toString())}
+                      dropPlaceHolder="Results Limit"
+                      Icon={<MdFilterList />}
+                    />
                   </div>
-                )}
+                  <div className={styles.formGroup}>
+                    <label>User ID</label>
+                    <input
+                      type="text"
+                      value={searchFilters.userId}
+                      onChange={(e) => handleSearchFilterChange('userId', e.target.value)}
+                      className={styles.textInput}
+                      placeholder="Enter User ID"
+                    />
+                  </div>
+                </div>
 
-                <div className={styles.searchActions}>
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>IP Address</label>
+                    <input
+                      type="text"
+                      value={searchFilters.ipAddress}
+                      onChange={(e) => handleSearchFilterChange('ipAddress', e.target.value)}
+                      className={styles.textInput}
+                      placeholder="Enter IP Address"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Response Code</label>
+                    <input
+                      type="number"
+                      value={searchFilters.responseCode}
+                      onChange={(e) => handleSearchFilterChange('responseCode', e.target.value)}
+                      className={styles.textInput}
+                      placeholder="e.g., 200, 404, 500"
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Start Date</label>
+                    <input
+                      type="datetime-local"
+                      value={searchFilters.startDate}
+                      onChange={(e) => handleSearchFilterChange('startDate', e.target.value)}
+                      className={styles.textInput}
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>End Date</label>
+                    <input
+                      type="datetime-local"
+                      value={searchFilters.endDate}
+                      onChange={(e) => handleSearchFilterChange('endDate', e.target.value)}
+                      className={styles.textInput}
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formActions}>
                   <button
                     onClick={handleSearchTrails}
-                    className={styles.searchBtn}
-                    disabled={loading}
+                    className={styles.saveBtn}
+                    disabled={trailLoading}
                   >
                     <MdSearch />
-                    {loading ? 'Searching...' : 'Search Trails'}
+                    {trailLoading ? 'Searching...' : 'Search Trails'}
                   </button>
                   <button
                     onClick={handleResetFilters}
-                    className={styles.resetBtn}
+                    className={styles.testBtn}
                   >
                     <MdRefresh />
                     Reset Filters
@@ -482,15 +443,10 @@ export default function UserManagement() {
                 </div>
               </div>
 
-              <div className={styles.resultsSection}>
-                <div className={styles.resultsHeader}>
-                  <h3>Audit Trail Results</h3>
-                  <span className={styles.resultsCount}>
-                    {trails?.length || 0} result{trails?.length !== 1 ? 's' : ''}
-                  </span>
-                </div>
+              <div className={styles.sectionGroup}>
+                <h3>Audit Trail Results ({trails?.length || 0} result{trails?.length !== 1 ? 's' : ''})</h3>
 
-                {loading ? (
+                {trailLoading ? (
                   <div className={styles.loadingState}>
                     <div className={styles.loadingSpinner}></div>
                     <span>Loading audit trails...</span>
@@ -516,6 +472,11 @@ export default function UserManagement() {
                           <div className={styles.trailMeta}>
                             {trail.ipAddress && (
                               <span className={styles.trailIp}>IP: {trail.ipAddress}</span>
+                            )}
+                            {trail.responseCode && (
+                              <span className={styles.trailResponseCode}>
+                                Status: {trail.responseCode}
+                              </span>
                             )}
                             {trail.userAgent && (
                               <span className={styles.trailAgent}>
@@ -546,326 +507,82 @@ export default function UserManagement() {
         );
 
       case 'API Keys':
+      default:
         return (
           <div className={styles.configContent}>
             <h2>Api Configuration</h2>
             <div className={styles.configSection}>
-              
-              <div className={styles.formGroup}>
-                <label>Choose api for</label>
-                <FormDropdown
-                  options={providerOptions}
-                  value={providerOptions.find(opt => opt.label === apiConfig.provider)}
-                  onSelect={handleProviderChange}
-                  dropPlaceHolder="Select API Provider"
-                  Icon={<MdStorage />}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Api key</label>
-                <div className={styles.inputGroup}>
-                  <input
-                    type={showApiKey ? "text" : "password"}
-                    value={apiConfig.apiKey}
-                    onChange={(e) => handleInputChange('apiKey', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="••••••••••••••••••••••••••••••••••••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowApiKey(!showApiKey)}
-                    className={styles.visibilityBtn}
-                  >
-                    {showApiKey ? <MdVisibilityOff /> : <MdVisibility />}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={generateApiKey}
-                    className={styles.generateBtn}
-                  >
-                    Regenerate
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Api Secret</label>
-                <div className={styles.inputGroup}>
-                  <input
-                    type={showApiSecret ? "text" : "password"}
-                    value={apiConfig.apiSecret}
-                    onChange={(e) => handleInputChange('apiSecret', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="••••••••••••••••••••••••••••••••••••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowApiSecret(!showApiSecret)}
-                    className={styles.visibilityBtn}
-                  >
-                    {showApiSecret ? <MdVisibilityOff /> : <MdVisibility />}
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.formActions}>
-                <button onClick={() => handleSave('api')} className={styles.saveBtn}>
-                  Save API Configuration
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'Support email':
-        return (
-          <div className={styles.configContent}>
-            <h2>Email Server Configuration</h2>
-            <div className={styles.configSection}>
-              
-              <div className={styles.formRow}>
+              <div className={styles.sectionGroup}>
+                <h3>Storage Provider Settings</h3>
+                
                 <div className={styles.formGroup}>
-                  <label>SMTP Server *</label>
-                  <input
-                    type="text"
-                    value={emailConfig.smtpServer}
-                    onChange={(e) => handleEmailConfigChange('smtpServer', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="smtp.gmail.com"
+                  <label>Choose api for</label>
+                  <FormDropdown
+                    options={providerOptions}
+                    value={providerOptions.find(opt => opt.label === apiConfig.provider)}
+                    onSelect={handleProviderChange}
+                    dropPlaceHolder="Select API Provider"
+                    Icon={<MdStorage />}
                   />
                 </div>
-                <div className={styles.formGroup}>
-                  <label>Port *</label>
-                  <input
-                    type="number"
-                    value={emailConfig.smtpPort}
-                    onChange={(e) => handleEmailConfigChange('smtpPort', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="587"
-                  />
-                </div>
-              </div>
 
-              <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label>Email Address *</label>
-                  <input
-                    type="email"
-                    value={emailConfig.emailAddress}
-                    onChange={(e) => handleEmailConfigChange('emailAddress', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="support@filmcountanization.com"
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Password *</label>
+                  <label>Api key</label>
                   <div className={styles.inputGroup}>
                     <input
-                      type={showEmailPassword ? "text" : "password"}
-                      value={emailConfig.password}
-                      onChange={(e) => handleEmailConfigChange('password', e.target.value)}
+                      type={showApiKey ? "text" : "password"}
+                      value={apiConfig.apiKey}
+                      onChange={(e) => handleInputChange('apiKey', e.target.value)}
                       className={styles.textInput}
-                      placeholder="••••••••••••••••"
+                      placeholder="••••••••••••••••••••••••••••••••••••••••••"
                     />
                     <button
                       type="button"
-                      onClick={() => setShowEmailPassword(!showEmailPassword)}
+                      onClick={() => setShowApiKey(!showApiKey)}
                       className={styles.visibilityBtn}
                     >
-                      {showEmailPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                      {showApiKey ? <MdVisibilityOff /> : <MdVisibility />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={generateApiKey}
+                      className={styles.generateBtn}
+                    >
+                      Regenerate
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label>Encryption Type</label>
-                  <FormDropdown
-                    options={encryptionOptions}
-                    value={encryptionOptions.find(opt => opt.value === emailConfig.encryptionType.toLowerCase())}
-                    onSelect={(option) => handleEmailConfigChange('encryptionType', option.value)}
-                    dropPlaceHolder="Select Encryption"
-                    Icon={<MdSecurity />}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Sender Name</label>
-                  <input
-                    type="text"
-                    value={emailConfig.senderName}
-                    onChange={(e) => handleEmailConfigChange('senderName', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="Organization Support"
-                  />
-                </div>
-              </div>
-
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label>Reply-To Email</label>
-                  <input
-                    type="email"
-                    value={emailConfig.replyToEmail}
-                    onChange={(e) => handleEmailConfigChange('replyToEmail', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="noreply@filmcountanization.com"
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Emails per Hour</label>
-                  <input
-                    type="number"
-                    value={emailConfig.maxEmailsPerHour}
-                    onChange={(e) => handleEmailConfigChange('maxEmailsPerHour', e.target.value)}
-                    className={styles.textInput}
-                    placeholder="100"
-                  />
-                </div>
-              </div>
-
-              <div className={styles.formActions}>
-                <button onClick={testEmailConnection} className={styles.testBtn}>
-                  Test Connection
-                </button>
-                <button onClick={() => handleSave('email')} className={styles.saveBtn}>
-                  Save Email Configuration
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'Schedule task':
-        return (
-          <div className={styles.configContent}>
-            <h2>Automated Task Configuration</h2>
-            <div className={styles.configSection}>
-              
-              <div className={styles.sectionGroup}>
-                <h3>System Backup Settings</h3>
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Backup Frequency</label>
-                    <FormDropdown
-                      options={frequencyOptions}
-                      value={scheduleConfig.backupFrequency}
-                      onSelect={(option) => handleScheduleConfigChange('backupFrequency', option)}
-                      dropPlaceHolder="Select Frequency"
-                      Icon={<MdSchedule />}
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Backup Time</label>
+                  <label>Api Secret</label>
+                  <div className={styles.inputGroup}>
                     <input
-                      type="time"
-                      value={scheduleConfig.backupTime}
-                      onChange={(e) => handleScheduleConfigChange('backupTime', e.target.value)}
+                      type={showApiSecret ? "text" : "password"}
+                      value={apiConfig.apiSecret}
+                      onChange={(e) => handleInputChange('apiSecret', e.target.value)}
                       className={styles.textInput}
+                      placeholder="••••••••••••••••••••••••••••••••••••••••••"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowApiSecret(!showApiSecret)}
+                      className={styles.visibilityBtn}
+                    >
+                      {showApiSecret ? <MdVisibilityOff /> : <MdVisibility />}
+                    </button>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.sectionGroup}>
-                <h3>System Cleanup Settings</h3>
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Frequency</label>
-                    <FormDropdown
-                      options={frequencyOptions}
-                      value={scheduleConfig.cleanupFrequency}
-                      onSelect={(option) => handleScheduleConfigChange('cleanupFrequency', option)}
-                      dropPlaceHolder="Select Frequency"
-                      Icon={<MdSchedule />}
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Cleanup Day</label>
-                    <FormDropdown
-                      options={dayOptions}
-                      value={scheduleConfig.cleanupDay}
-                      onSelect={(option) => handleScheduleConfigChange('cleanupDay', option)}
-                      dropPlaceHolder="Select Day"
-                      Icon={<MdSchedule />}
-                    />
-                  </div>
+                <div className={styles.formActions}>
+                  <button 
+                    onClick={() => handleSave('api')} 
+                    className={styles.saveBtn}
+                    disabled={configLoading}
+                  >
+                    {configLoading ? 'Saving...' : 'Save API Configuration'}
+                  </button>
                 </div>
               </div>
-
-              <div className={styles.sectionGroup}>
-                <h3>Reporting Settings</h3>
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Frequency</label>
-                    <FormDropdown
-                      options={frequencyOptions}
-                      value={scheduleConfig.reportFrequency}
-                      onSelect={(option) => handleScheduleConfigChange('reportFrequency', option)}
-                      dropPlaceHolder="Select Frequency"
-                      Icon={<MdNotifications />}
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Recipients *</label>
-                    <input
-                      type="text"
-                      value={scheduleConfig.reportRecipients}
-                      onChange={(e) => handleScheduleConfigChange('reportRecipients', e.target.value)}
-                      className={styles.textInput}
-                      placeholder="admin@filmcount.com, manager@filmcount.com"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.sectionGroup}>
-                <h3>Maintenance Settings</h3>
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Window</label>
-                    <input
-                      type="text"
-                      value={scheduleConfig.maintenanceWindow}
-                      onChange={(e) => handleScheduleConfigChange('maintenanceWindow', e.target.value)}
-                      className={styles.textInput}
-                      placeholder="03:00-05:00"
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Auto Updates</label>
-                    <div className={styles.toggleContainer}>
-                      <input
-                        type="checkbox"
-                        id="autoUpdates"
-                        checked={scheduleConfig.autoUpdates}
-                        onChange={(e) => handleScheduleConfigChange('autoUpdates', e.target.checked)}
-                        className={styles.toggleInput}
-                      />
-                      <label htmlFor="autoUpdates" className={styles.toggleLabel}>
-                        Enable automatic system updates during maintenance window
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.formActions}>
-                <button onClick={() => handleSave('schedule')} className={styles.saveBtn}>
-                  Save Schedule Configuration
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <div className={styles.configContent}>
-            <div className={styles.configSection}>
-              <h2>Api Configuration</h2>
-              <p>Select a configuration option from the navigation.</p>
             </div>
           </div>
         );

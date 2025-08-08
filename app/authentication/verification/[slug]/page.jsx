@@ -21,12 +21,8 @@ export default function Verify() {
   const { verifyEmail, getUserOrganizations, isUserAdmin } = useAuthStore();
 
   useEffect(() => {
-    // Extract token and code from slug
-    // Format: /authentication/verification/68882065d3817a2bb9804bc1/13862
     const slug = params.slug;
     if (slug) {
-      // Handle the slug as a single string that contains both token and code
-      // Split by the last occurrence of forward slash to separate token and code
       const slugStr = Array.isArray(slug) ? slug.join('/') : slug;
       const lastSlashIndex = slugStr.lastIndexOf('/');
       
@@ -36,7 +32,6 @@ export default function Verify() {
         setToken(extractedToken);
         setCode(extractedCode);
       } else {
-        // Fallback: treat entire slug as token if no slash found
         setToken(slugStr);
       }
     }
@@ -45,7 +40,6 @@ export default function Verify() {
   const handleRouting = () => {
     const organizations = getUserOrganizations();
     
-    // Check if user has admin roles
     if (isUserAdmin()) {
       router.push("/page/admin/overview");
       return;
@@ -159,12 +153,12 @@ export default function Verify() {
 
           <div className={styles.formFooter}>
             <h3>
-              Need help?{" "}
+              Request a new code?{" "}
               <span
                 className={styles.btnLogin}
-                onClick={() => router.push("/authentication/login")}
+                onClick={() => router.push("/authentication/verification")}
               >
-                Back to Login
+                Verification code
               </span>
             </h3>
           </div>

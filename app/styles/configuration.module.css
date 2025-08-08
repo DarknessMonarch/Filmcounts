@@ -184,29 +184,6 @@
     background: var(--tertiary-hover-color);
   }
 
-  .toggleContainer {
-    gap: 10px;
-    display: flex;
-    margin-top: 10px;
-    align-items: flex-start;
-  }
-
-  .toggleInput {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    cursor: pointer;
-    border-radius: 5px;
-    accent-color: var(--tertiary-color);
-  }
-
-  .toggleLabel {
-    cursor: pointer;
-    line-height: 1.4;
-    font-size: 0.8rem;
-    color: var(--light-color);
-  }
-
   .formActions {
     gap: 10px;
     display: flex;
@@ -226,6 +203,9 @@
     color: var(--background-color);
     background: var(--tertiary-color);
     transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .saveBtn:hover {
@@ -243,12 +223,163 @@
     color: var(--tertiary-color);
     transition: background-color 0.2s ease;
     border: 1px solid var(--tertiary-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .testBtn:hover {
     border: 1px solid var(--tertiary-color);
     background: var(--tertiary-color);
     color: var(--background-color);
+  }
+
+  /* Audit Trail Styles */
+  .loadingState {
+    gap: 15px;
+    display: flex;
+    padding: 40px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--light-color);
+  }
+
+  .loadingSpinner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid var(--background-light-color);
+    border-top: 3px solid var(--tertiary-color);
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .trailsList {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trailItem {
+    gap: 15px;
+    padding: 20px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    background: var(--background-light-color);
+    border: 1px solid var(--background-dark-color);
+    transition: all 0.2s ease;
+  }
+
+  .trailItem:hover {
+    border-color: var(--tertiary-light-color);
+    background: var(--background-color);
+  }
+
+  .trailHeader {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .trailUser {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .trailTimestamp {
+    gap: 6px;
+    display: flex;
+    align-items: center;
+    color: var(--light-color);
+    font-size: 0.8rem;
+  }
+
+  .trailContent {
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trailDescription {
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--primary-light-color);
+  }
+
+  .trailMeta {
+    gap: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .trailIp,
+  .trailResponseCode,
+  .trailAgent {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--light-color);
+    background: var(--background-dark-color);
+  }
+
+  .trailDetails {
+    gap: 8px;
+    display: flex;
+    padding: 15px;
+    border-radius: 8px;
+    flex-direction: column;
+    background: var(--background-dark-color);
+  }
+
+  .trailDetails strong {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+  }
+
+  .trailDetails pre {
+    margin: 0;
+    overflow-x: auto;
+    font-size: 0.75rem;
+    color: var(--light-color);
+    font-family: 'Courier New', monospace;
+  }
+
+  .emptyState {
+    gap: 20px;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--light-color);
+  }
+
+  .emptyState h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-light-color);
+  }
+
+  .emptyState p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.4;
   }
 
   /* Status Indicators */
@@ -285,6 +416,10 @@
 
   .configSection {
     padding: 30px;
+  }
+
+  .trailHeader {
+    flex-wrap: nowrap;
   }
 }
 

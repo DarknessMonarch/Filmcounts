@@ -81,6 +81,21 @@ export const useAuthStore = create(
         }
       },
 
+      resendEmailVerification: async (email) => {
+        try {
+          const res = await fetch(`${SERVER_API}/um/public/email-verification/resend`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          const data = await res.json();
+          return { success: res.ok, data };
+        } catch (error) {
+          console.error("Resend email verification error:", error);
+          return { success: false, error: "Resend email verification failed" };
+        }
+      },
+
       verifyForgotLink: async (token, code) => {
         try {
           const res = await fetch(`${SERVER_API}/um/public/verify/forgot/${token}/${code}`, {

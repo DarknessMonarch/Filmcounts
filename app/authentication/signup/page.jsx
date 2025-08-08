@@ -21,6 +21,7 @@ import {
 import {
   MdOutlineVpnKey as PasswordIcon,
   MdOutlineEmail as EmailIcon,
+  MdOutlinePhone as PhoneIcon,
 } from "react-icons/md";
 
 export default function SignUp() {
@@ -35,10 +36,11 @@ export default function SignUp() {
 
   const [formData, setFormData] = useState({
     username: "",
+    phone_number: "",
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "Individual",
+    userType: "INDIVIDUAL",
   });
 
   useEffect(() => {
@@ -64,6 +66,39 @@ export default function SignUp() {
     return true;
   };
 
+  const validatePhoneNumber = (phone) => {
+    // Remove any non-digit characters for validation
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Check if it's a valid Kenyan phone number format
+    if (cleanPhone.length === 12 && cleanPhone.startsWith('254')) {
+      return true;
+    } else if (cleanPhone.length === 10 && cleanPhone.startsWith('07')) {
+      return true;
+    } else if (cleanPhone.length === 9 && cleanPhone.startsWith('7')) {
+      return true;
+    }
+    
+    toast.error("Please enter a valid phone number (e.g., 254796143141, 0796143141, or 796143141)");
+    return false;
+  };
+
+  const formatPhoneNumber = (phone) => {
+    // Remove any non-digit characters
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Convert to international format (254...)
+    if (cleanPhone.length === 12 && cleanPhone.startsWith('254')) {
+      return cleanPhone;
+    } else if (cleanPhone.length === 10 && cleanPhone.startsWith('07')) {
+      return '254' + cleanPhone.substring(1);
+    } else if (cleanPhone.length === 9 && cleanPhone.startsWith('7')) {
+      return '254' + cleanPhone;
+    }
+    
+    return cleanPhone;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -71,6 +106,11 @@ export default function SignUp() {
     // Validate username on change
     if (name === "username") {
       validateUsername(value);
+    }
+    
+    // Validate phone number on change
+    if (name === "phone_number" && value.trim()) {
+      validatePhoneNumber(value);
     }
   };
 
@@ -119,6 +159,15 @@ export default function SignUp() {
       return;
     }
 
+    if (!formData.phone_number.trim()) {
+      toast.error("Phone number is required");
+      return;
+    }
+
+    if (!validatePhoneNumber(formData.phone_number)) {
+      return;
+    }
+
     if (!formData.email.trim()) {
       toast.error("Email is required");
       return;
@@ -145,9 +194,10 @@ export default function SignUp() {
     try {
       const userData = {
         username: formData.username,
+        phone_number: formatPhoneNumber(formData.phone_number),
         email: formData.email,
         password: formData.password,
-        accountType: formData.accountType,
+        userType: formData.userType,
       };
 
       if (referral) {
@@ -191,7 +241,7 @@ export default function SignUp() {
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div className={styles.formHeader}>
             <h1>Welcome</h1>
-            <p>Enter your email and password to sign up</p>
+            <p>Enter your details to sign up</p>
           </div>
 
           <div className={styles.authInput}>
@@ -202,6 +252,18 @@ export default function SignUp() {
               value={formData.username}
               onChange={handleInputChange}
               placeholder="Username"
+              required
+            />
+          </div>
+
+          <div className={styles.authInput}>
+            <PhoneIcon alt="phone icon" className={styles.authIcon} />
+            <input
+              type="tel"
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleInputChange}
+              placeholder="Phone Number (e.g., 254796143141)"
               required
             />
           </div>
@@ -309,7 +371,7 @@ export default function SignUp() {
                 Login
               </span>
             </h3>
-
+{/* 
             <div>or</div>
 
             <button
@@ -318,7 +380,7 @@ export default function SignUp() {
               onClick={handleGoogleSignUp}
             >
               <GoogleIcon className={styles.googleIcon} />
-            </button>
+            </button> */}
           </div>
         </form>
       </div>
